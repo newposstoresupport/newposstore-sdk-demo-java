@@ -43,137 +43,219 @@ The latest release is available on [Maven Central](https://mvnrepository.com/).
 ```
 
 
-## Permissions
-NEWPOSSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.
+[//]: # (## Permissions)
 
-`<uses-permission android:name="android.permission.INTERNET" />`<br>
-`<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`<br>
-`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>
+[//]: # (NEWPOSSTORE Android SDK need the following permissions, please add them in AndroidManifest.xml.)
 
-## ProGuard
-The specific rules are [already bundled](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/sdk/proguard-rules.pro) into the aar, which can be interpreted automatically.
+[//]: # ()
+[//]: # (`<uses-permission android:name="android.permission.INTERNET" />`<br>)
 
-## Set Up
+[//]: # (`<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />`<br>)
 
-### Step 1: Get Application Key and Secret
-Create a new app in PAXSTORE, and get **AppKey** and **AppSecret** from app detail page in developer center.
+[//]: # (`<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />`<br>)
 
-### Step 2: Initialization
-Configuring the application element, edit AndroidManifest.xml, it will have an application element. You need to configure the android:name attribute to point to your Application class (put the full name with package if the application class package is not the same as manifest root element declared package)
+[//]: # ()
+[//]: # (## ProGuard)
 
-    <application
-        android:name=".BaseApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+[//]: # (The specific rules are [already bundled]&#40;https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/sdk/proguard-rules.pro&#41; into the aar, which can be interpreted automatically.)
 
-Initializing AppKey,AppSecret and SN
->Please note, make sure you have put your own app's AppKey and AppSecret correctly
+[//]: # ()
+[//]: # (## Set Up)
 
-    public class BaseApplication extends Application {
-    
-        private static final String TAG = BaseApplication.class.getSimpleName();
-        
-        //todo make sure to replace with your own app's appKey and appSecret
-        private String appkey = "Your APPKEY";
-        private String appSecret = "Your APPSECRET";
-        
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            initStoreSdk();
-        }
-        
-        private void initStoreSdk() {
-           //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.
-            StoreSdk.getInstance().init(getApplicationContext(), appkey, appSecret, new BaseApiService.Callback() {
-                @Override
-                public void initSuccess() {
-                   //TODO Do your business here
-                }
-    
-                @Override
-                public void initFailed(RemoteException e) {
-                   //TODO Do failed logic here
-                    Toast.makeText(getApplicationContext(), "Cannot get API URL from STORE client, Please install STORE client first.", Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    }
+[//]: # ()
+[//]: # (### Step 1: Get Application Key and Secret)
 
-## More Apis
+[//]: # (Create a new app in PAXSTORE, and get **AppKey** and **AppSecret** from app detail page in developer center.)
 
-#### [StoreSdk](docs/StoreSdk.md)
+[//]: # ()
+[//]: # (### Step 2: Initialization)
 
-#### [ParamApi](docs/ParamApi.md)
+[//]: # (Configuring the application element, edit AndroidManifest.xml, it will have an application element. You need to configure the android:name attribute to point to your Application class &#40;put the full name with package if the application class package is not the same as manifest root element declared package&#41;)
 
-#### [SyncApiStrategy](docs/SyncApiStrategy.md)
+[//]: # ()
+[//]: # (    <application)
 
-#### [UpdateApi](docs/UpdateApi.md)
+[//]: # (        android:name=".BaseApplication")
 
-#### [ResultCode](docs/ResultCode.md)
+[//]: # (        android:allowBackup="true")
 
-#### [CloudMessageApi](docs/CloudMessageApi.md)
+[//]: # (        android:icon="@mipmap/ic_launcher")
 
-#### [CheckServiceApi](docs/CheckServiceApi.md)
+[//]: # (        android:label="@string/app_name")
 
-## Migrating to Android 8.0
-Since Android 8.0 has lots of changes that will affect your app's behavior, we recommand you to follow the guide to migrate
-to Android 8.0. For further information, you can refer to https://developer.android.google.cn/about/versions/oreo/android-8.0-migration
+[//]: # (        android:theme="@style/AppTheme">)
 
+[//]: # ()
+[//]: # (Initializing AppKey,AppSecret and SN)
 
-## FAQ
+[//]: # (>Please note, make sure you have put your own app's AppKey and AppSecret correctly)
 
-#### 1. How to resolve dependencies conflict?
+[//]: # ()
+[//]: # (    public class BaseApplication extends Application {)
 
-When dependencies conflict occur, the error message may like below:
+[//]: # (    )
+[//]: # (        private static final String TAG = BaseApplication.class.getSimpleName&#40;&#41;;)
 
-    Program type already present: xxx.xxx.xxx
+[//]: # (        )
+[//]: # (        //todo make sure to replace with your own app's appKey and appSecret)
 
-**Solution:**
+[//]: # (        private String appkey = "Your APPKEY";)
 
-You can use **exclude()** method to exclude the conflict dependencies by **group** or **module** or **both**.
+[//]: # (        private String appSecret = "Your APPSECRET";)
 
-e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:
+[//]: # (        )
+[//]: # (        @Override)
 
-    implementation ('com.whatspos.sdk:paxstore-3rd-app-android-sdk:x.xx.xx'){
-        exclude group: 'com.google.code.gson', module: 'gson'
-    }
+[//]: # (        public void onCreate&#40;&#41; {)
 
-#### 2. How to resolve attribute conflict?
+[//]: # (            super.onCreate&#40;&#41;;)
 
-When attribute conflict occur, the error message may like below:
+[//]: # (            initStoreSdk&#40;&#41;;)
 
-    Manifest merger failed : Attribute application@allowBackup value=(false) from 
-    AndroidManifest.xml...
-    is also present at [com.whatspos.sdk:paxstore-3rd-app-android-sdk:x.xx.xx] 
-    AndroidManifest.xml...
-    Suggestion: add 'tools:replace="android:allowBackup"' to <application> element
-    at AndroidManifest.xml:..
+[//]: # (        })
 
-**Solution:**
+[//]: # (        )
+[//]: # (        private void initStoreSdk&#40;&#41; {)
 
-Add **xmlns:tools="http\://<span></span>schemas.android.com/tools"** in your manifest header
+[//]: # (           //todo Init AppKey，AppSecret, make sure the appKey and appSecret is corret.)
 
-       <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-            package="com.yourpackage"
-            xmlns:tools="http://schemas.android.com/tools">
+[//]: # (            StoreSdk.getInstance&#40;&#41;.init&#40;getApplicationContext&#40;&#41;, appkey, appSecret, new BaseApiService.Callback&#40;&#41; {)
 
-Add **tools:replace = "the confilct attribute"** to your application tag:
+[//]: # (                @Override)
 
-        <application
-            ...
-            tools:replace="allowBackup"/>
+[//]: # (                public void initSuccess&#40;&#41; {)
 
+[//]: # (                   //TODO Do your business here)
 
-More questions, please refer to [FAQ](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/wiki/FAQ)
+[//]: # (                })
+
+[//]: # (    )
+[//]: # (                @Override)
+
+[//]: # (                public void initFailed&#40;RemoteException e&#41; {)
+
+[//]: # (                   //TODO Do failed logic here)
+
+[//]: # (                    Toast.makeText&#40;getApplicationContext&#40;&#41;, "Cannot get API URL from STORE client, Please install STORE client first.", Toast.LENGTH_LONG&#41;.show&#40;&#41;;)
+
+[//]: # (                })
+
+[//]: # (            }&#41;;)
+
+[//]: # (        })
+
+[//]: # (    })
+
+[//]: # (## More Apis)
+
+[//]: # ()
+[//]: # (#### [StoreSdk]&#40;docs/StoreSdk.md&#41;)
+
+[//]: # ()
+[//]: # (#### [ParamApi]&#40;docs/ParamApi.md&#41;)
+
+[//]: # ()
+[//]: # (#### [SyncApiStrategy]&#40;docs/SyncApiStrategy.md&#41;)
+
+[//]: # ()
+[//]: # (#### [UpdateApi]&#40;docs/UpdateApi.md&#41;)
+
+[//]: # ()
+[//]: # (#### [ResultCode]&#40;docs/ResultCode.md&#41;)
+
+[//]: # ()
+[//]: # (#### [CloudMessageApi]&#40;docs/CloudMessageApi.md&#41;)
+
+[//]: # ()
+[//]: # (#### [CheckServiceApi]&#40;docs/CheckServiceApi.md&#41;)
+
+[//]: # ()
+[//]: # (## Migrating to Android 8.0)
+
+[//]: # (Since Android 8.0 has lots of changes that will affect your app's behavior, we recommand you to follow the guide to migrate)
+
+[//]: # (to Android 8.0. For further information, you can refer to https://developer.android.google.cn/about/versions/oreo/android-8.0-migration)
+
+[//]: # ()
+[//]: # ()
+[//]: # (## FAQ)
+
+[//]: # ()
+[//]: # (#### 1. How to resolve dependencies conflict?)
+
+[//]: # ()
+[//]: # (When dependencies conflict occur, the error message may like below:)
+
+[//]: # ()
+[//]: # (    Program type already present: xxx.xxx.xxx)
+
+[//]: # ()
+[//]: # (**Solution:**)
+
+[//]: # ()
+[//]: # (You can use **exclude&#40;&#41;** method to exclude the conflict dependencies by **group** or **module** or **both**.)
+
+[//]: # ()
+[//]: # (e.g. To exclude 'com.google.code.gson:gson:2.8.5' in SDK, you can use below:)
+
+[//]: # ()
+[//]: # (    implementation &#40;'com.whatspos.sdk:paxstore-3rd-app-android-sdk:x.xx.xx'&#41;{)
+
+[//]: # (        exclude group: 'com.google.code.gson', module: 'gson')
+
+[//]: # (    })
+
+[//]: # ()
+[//]: # (#### 2. How to resolve attribute conflict?)
+
+[//]: # ()
+[//]: # (When attribute conflict occur, the error message may like below:)
+
+[//]: # ()
+[//]: # (    Manifest merger failed : Attribute application@allowBackup value=&#40;false&#41; from )
+
+[//]: # (    AndroidManifest.xml...)
+
+[//]: # (    is also present at [com.whatspos.sdk:paxstore-3rd-app-android-sdk:x.xx.xx] )
+
+[//]: # (    AndroidManifest.xml...)
+
+[//]: # (    Suggestion: add 'tools:replace="android:allowBackup"' to <application> element)
+
+[//]: # (    at AndroidManifest.xml:..)
+
+[//]: # ()
+[//]: # (**Solution:**)
+
+[//]: # ()
+[//]: # (Add **xmlns:tools="http\://<span></span>schemas.android.com/tools"** in your manifest header)
+
+[//]: # ()
+[//]: # (       <manifest xmlns:android="http://schemas.android.com/apk/res/android")
+
+[//]: # (            package="com.yourpackage")
+
+[//]: # (            xmlns:tools="http://schemas.android.com/tools">)
+
+[//]: # ()
+[//]: # (Add **tools:replace = "the confilct attribute"** to your application tag:)
+
+[//]: # ()
+[//]: # (        <application)
+
+[//]: # (            ...)
+
+[//]: # (            tools:replace="allowBackup"/>)
+
+[//]: # ()
+[//]: # ()
+[//]: # (More questions, please refer to [FAQ]&#40;https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/wiki/FAQ&#41;)
 
 ## License
 
 See the [Apache 2.0 license](https://github.com/PAXSTORE/paxstore-3rd-app-android-sdk/blob/master/LICENSE) file for details.
 
-    Copyright 2018 PAX Computer Technology(Shenzhen) CO., LTD ("PAX")
+    Copyright 2025 NEWPOSTech CO., LTD ("NEWPOS")
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
