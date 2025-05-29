@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.newpos.store.android.sdk'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 22
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures{
+        aidl(true)
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+task makeAidlJar(type: Jar) {
+    //def version = "1.0"//初版
+    def version = "1.1"//增加dynamicRequest接口
+    from zipTree(file('build/intermediates/aar_main_jar/debug/syncDebugLibJars/classes.jar'))
+    archiveBaseName = "storesdk-aidl-v${version}"
+    exclude('test/','BuildConfig.class','R.class')
+    exclude{ it.name.startsWith('R$') }
+}

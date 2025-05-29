@@ -1,0 +1,81 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.android.newpos.store.sdk.demo'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.android.newpos.store.sdk.demo"
+        minSdk 22
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        //TODO 勿传
+        newstore{
+            keyAlias 'newstore'
+            keyPassword 'newstore'
+            storeFile file('newstore.jks')
+            storePassword 'newpos'
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.newstore
+        }
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.newstore
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "NewStoreSdkDemo" +
+                    "-${defaultConfig.versionName}" +
+                    "-${variant.buildType.name}.apk"
+        }
+
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'androidx.navigation:navigation-fragment:2.5.3'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation 'androidx.preference:preference:1.2.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20")
+
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation "io.reactivex.rxjava2:rxjava:2.1.7"
+
+    implementation 'com.tencent:mmkv:1.2.10'
+
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    implementation project(':api')
+    implementation project(':aidl')
+}

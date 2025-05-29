@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">NEWPOSSTORE SDK Demo</string>
+
+    <string name="sdk_version">STORE SDK Version: %s</string>
+
+    <string name="nav_header_title">NEWPOSSTORE SDK</string>
+    <string name="nav_header_subtitle">https://github.com/NEWPOSSTORE</string>
+
+    <string name="base">Basic Abilities</string>
+    <string name="advanced">Advanced Capabilities</string>
+
+
+    <string name="menu_register">Registration</string>
+    <string name="menu_register_detail">The application information is registered to the platform server to obtain the corresponding enabled capabilities</string>
+    <string name="hand_register">Manual Registration</string>
+    <string name="hand_client_id">Enter Client ID</string>
+    <string name="client_id_hint">Please Enter Client ID:</string>
+    <string name="register_rki_detail">When your application has enabled RKI, you need to apply for ClientId to register with the backend to fully use the RKI capabilities.</string>
+
+    <string name="menu_inquirer">App Inquirer</string>
+    <string name="menu_inquirer_detail">Register the inquirer with Core, and notify third-party applications to inquire about the strategy when Core needs to update the app</string>
+    <string name="app_ready_to_be_updated">App ready to be updated</string>
+
+
+    <string name="menu_lbs">Lbs Positioning</string>
+    <string name="menu_lbs_detail">Third-party applications use base stations to locate terminals</string>
+
+
+    <string name="menu_param">Parameters Download</string>
+    <string name="menu_param_detail">Third-party applications download the parameters configured on the cloud platform through Core</string>
+    <string name="query_app_parameters">Query app parameters</string>
+    <string name="download_app_parameters_file">download app parameters file</string>
+
+
+    <string name="menu_cloud">Cloud Message</string>
+    <string name="menu_cloud_detail">Third-party applications receive push messages from the cloud platform by registering broadcast receivers</string>
+    <string name="register_cloud_success">Successfully registered the cloud messaging capability</string>
+    <string name="cmr">You can view the detailed business logic in CloudMessageReceiver!\n We use static registration, you can also use dynamic registration</string>
+    <string name="register">register</string>
+    <string name="un_register">un_register</string>
+
+
+    <string name="menu_ota">OTA Upgrade</string>
+    <string name="menu_ota_detail">Third-party application query terminal firmware update related information and control</string>
+
+
+    <string name="menu_insight">New Insight</string>
+    <string name="menu_insight_detail">Third-party applications upload industry-specific data to the cloud platform, which can then accurately analyze the data to obtain valuable information such as industry trends.</string>
+
+
+    <string name="menu_hotfix">New Hotfix</string>
+    <string name="menu_hotfix_detail">Third-party applications integrate the hotfix support library of the manufacturer to enable online emergency and rapid repair of executable code</string>
+
+
+    <string name="menu_stack">New Stack</string>
+    <string name="menu_stack_detail">Third-party applications can quickly locate online problem stack information by integrating the vendor stack support library, and the cloud platform can perform intelligent code analysis on it.</string>
+
+    <string name="menu_rki">RKI(Remote Keys Injection)</string>
+    <string name="menu_rki_detail">RKI provides a secure and reliable remote key injection management system</string>
+    <string name="bind_rki">Binding RKI service</string>
+    <string name="download_customer_keys">Download Customers Keys</string>
+    <string name="download_ca">Download CA</string>
+    <string name="download_customer_keys_prompt">Please check the CloudMessageReceiver cloud message type distribution download key.</string>
+
+
+    <string name="init_success">init store sdk success!</string>
+    <string name="newstore_lost">Cannot get information from STORE client, Please install STORE client first.</string>
+    <string name="allow_overlay">Please allow the current APP to display windows on other applications.</string>
+    <string name="result_title">Initialization results</string>
+    <string name="authentication_error">authenticationInfo is null</string>
+    <string name="error_title">Something went wrong</string>
+    <string name="i_see">I see</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="update_success">Update Client ID Success!</string>
+</resources>
