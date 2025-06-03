@@ -75,10 +75,12 @@ public class ParamAbility extends BaseAbility {
         }else {
             localResponse = appResponse;
         }
-//        if(!Objects.equals(localResponse.packageName, downloadRequest.getPackageName())){
-//            BaseLog.e("Package name does not match");
-//            return null;
-//        }
+
+        //TODO 使用newstore测试
+        if(!Objects.equals(localResponse.packageName, downloadRequest.getPackageName())){
+            BaseLog.e("Package name does not match");
+            return null;
+        }
 
         ParamDownloadResponse paramDownloadResponse = new ParamDownloadResponse();
         paramDownloadResponse.appId = localResponse.appId;

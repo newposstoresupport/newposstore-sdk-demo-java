@@ -1,7 +1,5 @@
 package com.android.newpos.store.sdk.demo.base;
 
-import android.app.SyncNotedAppOp;
-
 import com.tencent.mmkv.MMKV;
 
 /**

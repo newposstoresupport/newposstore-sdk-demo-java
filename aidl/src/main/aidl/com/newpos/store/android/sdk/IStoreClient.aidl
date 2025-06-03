@@ -130,5 +130,5 @@ interface IStoreClient {
     *                English Download Results, SUCCESS or other failure information
     *
     */
-    String downloadFile(String fileUrl, String filePath);
+    //String downloadFile(String fileUrl, String filePath);
 }

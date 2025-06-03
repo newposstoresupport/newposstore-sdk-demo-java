@@ -13,9 +13,6 @@ import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.newpos.store.android.sdk.AidlConstant;
 import com.newpos.store.android.sdk.IAppInquirer;
@@ -30,7 +27,6 @@ import com.newpos.store.android.sdk.dto.PatchType;
 import com.newpos.store.android.sdk.dto.QueryRequest;
 import com.newpos.store.android.sdk.listener.IApiCallback;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,11 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -91,7 +82,12 @@ public class BaseApi {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 try {
                     storeClient = IStoreClient.Stub.asInterface(service);
-                    AuthenticationInfo ai = storeClient.getAuthenticationInfoEx(elements, authenticationRequest);
+                    AuthenticationInfo ai = null;
+                    if(BaseUtils.is0116NewStore(c)){
+                        ai = storeClient.getAuthenticationInfo(elements);
+                    }else {
+                        ai = storeClient.getAuthenticationInfoEx(elements, authenticationRequest);
+                    }
                     BaseLog.d("ai:"+ai);
                     if(ai == null){
                         BaseLog.e(ERROR_MARKET_AUTHENTICATION);
@@ -151,6 +147,10 @@ public class BaseApi {
             return null;
         }
 
+        if(BaseUtils.is0116NewStore(getContext())){
+            return getAuthenticationInfo();
+        }
+
         try {
             return storeClient.getAuthenticationInfoEx(StoreSdk.getInstance().getAppElements(), request);
         } catch (RemoteException e) {
@@ -191,11 +191,11 @@ public class BaseApi {
         } catch (PackageManager.NameNotFoundException ignore) {}
 
         //TODO 使用newstore测试
-        {
-            appQuery.packageName = "com.newpos.store.android.app";
-            appQuery.verName = "1.0.20250103";
-            appQuery.verCode = 1;
-        }
+//        {
+//            appQuery.packageName = "com.newpos.store.android.app";
+//            appQuery.verName = "1.0.20250103";
+//            appQuery.verCode = 1;
+//        }
 
         AttachFile attachFile = new AttachFile();
         attachFile.patchType = patchType.ordinal();
@@ -218,30 +218,30 @@ public class BaseApi {
     }
 
     public String downloadFile(String url, String filePath) throws IOException {
-//        Request request = new Request.Builder().url(url).build();
-//        Response response = client.newCall(request).execute();
-//        InputStream inputStream = response.body().byteStream();
-//        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-//        byte[] buffer = new byte[2048];
-//        int len = 0;
-//        while ((len = inputStream.read(buffer)) != -1) {
-//            fileOutputStream.write(buffer, 0, len);
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+        InputStream inputStream = response.body().byteStream();
+        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+        byte[] buffer = new byte[2048];
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            fileOutputStream.write(buffer, 0, len);
+        }
+        fileOutputStream.flush();
+
+        return filePath;
+
+//        if(storeClient == null){
+//            BaseLog.e("please init firstly!");
+//            return null;
 //        }
-//        fileOutputStream.flush();
 //
-//        return filePath;
-
-        if(storeClient == null){
-            BaseLog.e("please init firstly!");
-            return null;
-        }
-
-        try {
-            return storeClient.downloadFile(url, filePath);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        return null;
+//        try {
+//            return storeClient.downloadFile(url, filePath);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 
     private final OkHttpClient client = new OkHttpClient.Builder()

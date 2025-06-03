@@ -27,6 +27,7 @@ import io.reactivex.schedulers.Schedulers;
  * @website : <a href="https://www.newpostech.com/">...</a>
  */
 public class ParamViewModel extends BaseViewModel {
+
     private final MutableLiveData<String> mInfo;
 
     public ParamViewModel(@NonNull Application application) {
