@@ -53,17 +53,18 @@ public class RkiAbility extends BaseAbility {
         return bind;
     }
 
-    public void downloadCustomerKeys(String clientId, String kdhUrl, IRkiCallback callback){
+    public void downloadCustomerKeys(String clientId, String kdhUrl, String messageId, IRkiCallback callback){
         IRKIService irkiService = getRkiService();
         if(irkiService == null){
-           BaseLog.e("rki service is null!");
+            BaseLog.e("rki service is null!");
             return;
         }
-        RKIOption rkiOption = new RKIOption();
-        rkiOption.setClientId(clientId);
-        rkiOption.setKdhUrl(kdhUrl);
         try {
-            irkiService.setOption(rkiOption);
+            RKIOption rkiOption = new RKIOption(kdhUrl, clientId, messageId);
+            if(!rkiService.setOption(rkiOption)){
+                BaseLog.e("setOption is error!");
+                return;
+            }
             irkiService.download(new ICallBack.Stub() {
                 @Override
                 public void onCall(int code, String message, List<RKIKey> keyList) throws RemoteException {
@@ -90,10 +91,6 @@ public class RkiAbility extends BaseAbility {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-    }
-
-    public void downloadRootCa(){
-        //TODO
     }
 
     private final ServiceConnection connection = new ServiceConnection() {

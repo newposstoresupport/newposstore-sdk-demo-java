@@ -2,6 +2,8 @@ package com.android.newpos.store.sdk.demo.cloud;
 
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_NOTIFICATION;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS;
+import static com.newpos.store.android.sdk.Constant.CM_DATA;
+import static com.newpos.store.android.sdk.Constant.CM_MSGID;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -13,6 +15,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -75,14 +79,15 @@ public class CloudMessageReceiver extends BroadcastReceiver {
                 sendNotification(context, title, content, sound, bubble);
             }
             if(CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS.equals(cmd)){
+                String messageId = bundle.getString(CM_MSGID);
                 JSONObject config = jsonObject.getJSONObject("config");
                 String kdhUrl = config.getString("kdhUrl");
                 if(TextUtils.isEmpty(kdhUrl)){
                     return;
                 }
                 StoreSdk.getInstance().rkiAbility()
-                        .downloadCustomerKeys(AppUtils.getClientId(), kdhUrl, (code, message, keyList)
-                                -> Toast.makeText(context, "onDownload:"+code+","+message+","+keyList, Toast.LENGTH_SHORT).show());
+                        .downloadCustomerKeys(AppUtils.getClientId(), kdhUrl, messageId, (code, message, keyList)
+                                -> Log.e("IRkiCallback", "onDownload:"+code+","+message+","+keyList));
             }
         } catch (JSONException e) {
             e.printStackTrace();

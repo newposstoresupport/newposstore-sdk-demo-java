@@ -1,12 +1,20 @@
 package com.newpos.store.android.sdk.ability;
 
+import static com.newpos.store.android.sdk.Constant.API_SUCCESS;
+
+import android.text.TextUtils;
+
 import com.newpos.store.android.sdk.base.BaseAbility;
+import com.newpos.store.android.sdk.base.BaseApi;
+import com.newpos.store.android.sdk.base.BaseException;
 import com.newpos.store.android.sdk.base.BaseLog;
+import com.newpos.store.android.sdk.base.BaseUtils;
 import com.newpos.store.android.sdk.dto.AppElements;
 import com.newpos.store.android.sdk.dto.LbsLocationRequest;
 import com.newpos.store.android.sdk.dto.LbsLocationResponse;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @ClassName : LbsAbility
@@ -25,24 +33,21 @@ public class LbsAbility extends BaseAbility {
         }
     }
 
-//    public LbsLocationResponse requestLocation(LbsLocationRequest locationRequest, boolean wifi){
-//        BaseRequest<LbsLocationRequest> baseRequest = new BaseRequest<>();
-//        baseRequest.setRequestBean(locationRequest);
-//        baseRequest.setApi(getLocationApi(wifi));
-//        return (LbsLocationResponse) requestHttp(baseRequest, LbsLocationResponse.class);
-//    }
-
-    public String getLocationApi(boolean wifi){
-        List<String> apis = getApis();
-        for (String api : apis){
-            if(wifi){
-                if(api.contains("wifi")){
-                    return api;
-                }
-            }else {
-                return api;
-            }
+    public LbsLocationResponse getLocation(LbsLocationRequest locationRequest, boolean wifi) throws BaseException {
+        String response = BaseApi.getInstance().requestLocation(locationRequest, wifi);
+        if(TextUtils.isEmpty(response)){
+            return null;
         }
-        return null;
+
+        LbsLocationResponse locationResponse = BaseUtils.toObject(response, LbsLocationResponse.class);
+        if(locationResponse == null){
+            return null;
+        }
+
+        if(!Objects.equals(locationResponse.code, API_SUCCESS)){
+            throw new BaseException(locationResponse.msg+"["+locationResponse.code+"]");
+        }
+
+        return locationResponse;
     }
 }

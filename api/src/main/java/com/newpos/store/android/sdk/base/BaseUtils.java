@@ -15,6 +15,7 @@ import com.newpos.store.android.sdk.AidlConstant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @ClassName : BaseUtils
@@ -79,5 +80,18 @@ public class BaseUtils {
         }
 
         return false;
+    }
+
+    public static String formatSize(long bytes) {
+        final long K = 1024;
+        final long M = K * K;
+        final long G = M * K;
+        final long T = G * K;
+
+        if (bytes >= T) return String.format(Locale.US, "%.2f TB", bytes / (double)T);
+        if (bytes >= G) return String.format(Locale.US, "%.2f GB", bytes / (double)G);
+        if (bytes >= M || bytes >= 1000 * K) return String.format(Locale.US, "%.2f MB", bytes / (double)M);
+        if (bytes >= K) return String.format(Locale.US, "%.2f KB", bytes / (double)K);
+        return bytes + " B";
     }
 }

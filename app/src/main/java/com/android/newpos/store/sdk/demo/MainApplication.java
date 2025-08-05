@@ -1,9 +1,12 @@
 package com.android.newpos.store.sdk.demo;
 
+import static com.liulishuo.filedownloader.util.FileDownloadUtils.formatString;
+
 import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -14,6 +17,10 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.android.newpos.store.sdk.demo.inquirer.AppInquirerViewModel;
+import com.liulishuo.filedownloader.FileDownloader;
+import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
+import com.liulishuo.filedownloader.services.DefaultIdGenerator;
+import com.liulishuo.filedownloader.util.FileDownloadUtils;
 import com.newpos.store.android.sdk.IAppInquirer;
 import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.base.SPreference;
@@ -41,9 +48,9 @@ import io.reactivex.schedulers.Schedulers;
 public class MainApplication extends Application {
     //TODO step 1
     // make sure to replace with your own appid & appkey & appsecret
-    private static final String AppId = "a4bfa98d9f65a365b0d04ad0b88aa710";
-    private static final String AppKey = "c5a20d792f74303a1e6e1e18730358f5";
-    private static final String AppSecret = "0ddc21255dd484c33afbf8e8446efed6";
+    private static final String AppId = "32292cc7e05a2b86ddea1d6746210283";
+    private static final String AppKey = "c3ff54daf66bbbd2e8d8dbf08172a5aa";
+    private static final String AppSecret = "a8e2188e9474692ea6a538f0a4f955ab";
 
     private static MainApplication mainApplication;
 
@@ -54,8 +61,10 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        System.out.println("MainApplication>>onCreate");
         mainApplication = this;
         MMKV.initialize(this);
+        initDownloader();
         initStoreSdk(AppUtils.getClientId());
         SPreference.I().init(getApplicationContext());
     }
@@ -139,5 +148,25 @@ public class MainApplication extends Application {
                     dialog.show();
                 }, Throwable::printStackTrace);
 
+    }
+
+    private void initDownloader(){
+        FileDownloader.setupOnApplicationOnCreate(this)
+                .connectionCreator(new FileDownloadUrlConnection
+                        .Creator(new FileDownloadUrlConnection.Configuration()
+                        .connectTimeout(15_000) // set connection timeout.
+                        .readTimeout(15_000) // set read timeout.
+                )).idGenerator(new DefaultIdGenerator(){
+                    @Override
+                    public int transOldId(int oldId, String url, String path, boolean pathAsDirectory) {
+                        return generateId(url, path, pathAsDirectory);
+                    }
+
+                    @Override
+                    public int generateId(String url, String path, boolean pathAsDirectory) {
+                        return FileDownloadUtils.md5(formatString("path:%s", path)).hashCode();
+                    }
+                });
+        FileDownloadUtils.setDefaultSaveRootPath(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
     }
 }

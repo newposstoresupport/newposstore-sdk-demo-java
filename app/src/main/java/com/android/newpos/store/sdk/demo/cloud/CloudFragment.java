@@ -74,7 +74,16 @@ public class CloudFragment extends BaseFragment<CloudViewModel> {
             Toast.makeText(requireContext(), R.string.register_cloud_success, Toast.LENGTH_SHORT).show();
         });
 
-        binding.unRegister.setOnClickListener(v -> requireActivity().unregisterReceiver(cloudMessageReceiver));
+        binding.unRegister.setOnClickListener(v -> {
+            try {
+                requireActivity().unregisterReceiver(cloudMessageReceiver);
+                Toast.makeText(requireContext(), R.string.unregister_cloud_success, Toast.LENGTH_SHORT).show();
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(requireContext(), "Unregistered or destroyed!!", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(requireContext(), "Destroyed unsuccessfully!!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

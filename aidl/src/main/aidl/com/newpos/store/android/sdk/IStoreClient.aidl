@@ -40,18 +40,6 @@ interface IStoreClient {
     AuthenticationInfo getAuthenticationInfo(in AppElements elements);
 
     /*
-    * Chinese 获取注册认证信息
-    * English Get registration authentication information
-    *
-    * @params elements Chinese 应用三要素信息 {@link AppElements}
-    *                  English Three elements of application @{@link AppElements}
-    *
-    * @params request Chinese 请求信息 {@link AuthenticationRequest}
-    *                 English Request Information @{@link AuthenticationRequest}
-    */
-    AuthenticationInfo getAuthenticationInfoEx(in AppElements elements, in AuthenticationRequest request);
-
-    /*
     * Chinese 获取通道信息
     * English Get channel information
     *
@@ -117,6 +105,18 @@ interface IStoreClient {
     String dynamicRequest(String url, in Map<String, String> headers, String json);
 
     /*
+    * Chinese 获取注册认证信息
+    * English Get registration authentication information
+    *
+    * @params elements Chinese 应用三要素信息 {@link AppElements}
+    *                  English Three elements of application @{@link AppElements}
+    *
+    * @params request Chinese 请求信息 {@link AuthenticationRequest}
+    *                 English Request Information @{@link AuthenticationRequest}
+    */
+    AuthenticationInfo getAuthenticationInfoEx(in AppElements elements, in AuthenticationRequest request);
+
+    /*
     * Chinese 动态请求服务器数据
     * English Dynamically request server data
     *
@@ -130,5 +130,5 @@ interface IStoreClient {
     *                English Download Results, SUCCESS or other failure information
     *
     */
-    //String downloadFile(String fileUrl, String filePath);
+    String downloadFile(String fileUrl, String filePath);
 }

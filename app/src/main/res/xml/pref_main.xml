@@ -2,6 +2,19 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
+        app:title="@string/common"/>
+    <Preference
+        app:icon="@mipmap/common"
+        app:fragment="com.android.newpos.store.sdk.demo.common.CommonFragment"
+        app:title="@string/menu_common"
+        app:summary="@string/menu_common_detail"/>
+    <Preference
+        app:icon="@mipmap/app"
+        app:fragment="com.android.newpos.store.sdk.demo.app.AppFragment"
+        app:title="@string/menu_app"
+        app:summary="@string/menu_app_detail"/>
+
+    <PreferenceCategory
         app:title="@string/base"/>
     <Preference
         app:icon="@mipmap/register"

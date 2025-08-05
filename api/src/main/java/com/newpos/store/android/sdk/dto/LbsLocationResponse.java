@@ -9,6 +9,6 @@ package com.newpos.store.android.sdk.dto;
  * @Description :
  * @website : <a href="https://www.newpostech.com/">...</a>
  */
-public class LbsLocationResponse {
+public class LbsLocationResponse extends BaseResponse {
 
 }

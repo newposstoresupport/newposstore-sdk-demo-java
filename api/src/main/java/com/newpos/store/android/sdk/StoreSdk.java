@@ -1,9 +1,13 @@
 package com.newpos.store.android.sdk;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.RemoteException;
 import android.text.TextUtils;
+import android.widget.Toast;
 
+import com.newpos.store.android.sdk.ability.AppAbility;
 import com.newpos.store.android.sdk.ability.CloudMessageAbility;
 import com.newpos.store.android.sdk.ability.GoInsightAbility;
 import com.newpos.store.android.sdk.ability.LbsAbility;
@@ -49,6 +53,7 @@ public class StoreSdk {
     private UpgradeAbility upgradeAbility;
     private OtaAbility otaAbility;
     private RkiAbility rkiAbility;
+    private AppAbility appAbility;
 
     public static StoreSdk getInstance(){
         if(null == store){
@@ -112,6 +117,7 @@ public class StoreSdk {
                     initAbilities(ai);
                     callback.initSuccess();
                     semaphore.release(1);
+
                 }
 
                 @Override
@@ -120,6 +126,11 @@ public class StoreSdk {
                     semaphore.release(1);
                 }
             });
+        }else{
+            BaseLog.d("StoreSdk is already initialized, please do not initialize it repeatedly");
+            if(callback != null){
+                callback.initSuccess();
+            }
         }
     }
 
@@ -236,11 +247,25 @@ public class StoreSdk {
         return rkiAbility;
     }
 
+    public AppAbility appAbility(){
+        if (appAbility == null) {
+            acquireSemaphore();
+            if (appAbility == null) {
+                throw new IllegalStateException("Not initialized");
+            }
+        }
+        return appAbility;
+    }
+
     /**
      * Open the details of an application in the App Market
      */
-    public void openAppDetail(){
-
+    public void openAppDetail(String packageName){
+        Context context = BaseApi.getInstance().getContext();
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("market://details?id="+packageName));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     /**
@@ -284,6 +309,7 @@ public class StoreSdk {
         if(map.containsKey(EAbility.RKI)){
             rkiAbility = new RkiAbility(ai.getBaseUrl(), appElements, ai.getSerialNo(), map.get(EAbility.RKI));
         }
+        appAbility = new AppAbility(ai.getBaseUrl(), appElements, ai.getSerialNo(), map.get(EAbility.APP));
     }
 
     /**

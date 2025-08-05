@@ -32,6 +32,7 @@ public interface Constant {
     String ACTION_CLOUD_MESSAGE_CLICKED = "com.newstore.action.CLOUD_MESSAGE_CLICKED";
     String PERMISSION_RECEIVE_CLOUD_MESSAGE = "store.permission.RECEIVE_CLOUD_MESSAGE";
     String CM_DATA = "cm_data";
+    String CM_MSGID = "cm_msgid";
     String CM_SOUND = "cm_sound";
     String CM_BADGE = "cm_badge";
 

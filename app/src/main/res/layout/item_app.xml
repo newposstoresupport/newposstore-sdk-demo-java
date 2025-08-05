@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text"
+        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        tools:text="name" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/version"
+        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/text"
+        android:textSize="10sp"
+        android:layout_marginStart="10dp"
+        tools:text="1.0.0" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/size"
+        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/version"
+        android:textSize="10sp"
+        android:layout_marginStart="10dp"
+        tools:text="10M" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/percent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/size"
+        android:textSize="10sp"
+        android:layout_marginStart="10dp"
+        tools:text="90%" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:layout_alignParentEnd="true"
+        android:textSize="13sp"
+        android:text="@string/download"
+        android:layout_marginStart="10dp" />
+</RelativeLayout>

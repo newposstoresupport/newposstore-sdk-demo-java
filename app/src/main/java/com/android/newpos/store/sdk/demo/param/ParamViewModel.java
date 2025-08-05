@@ -1,6 +1,7 @@
 package com.android.newpos.store.sdk.demo.param;
 
 import android.app.Application;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,11 @@ import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.ability.ParamAbility;
 import com.newpos.store.android.sdk.dto.AppResponse;
 import com.newpos.store.android.sdk.dto.ParamDownloadRequest;
+import com.newpos.store.android.sdk.dto.ParamDownloadResponse;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -29,10 +34,13 @@ import io.reactivex.schedulers.Schedulers;
 public class ParamViewModel extends BaseViewModel {
 
     private final MutableLiveData<String> mInfo;
+    private final MutableLiveData<ParamDownloadResponse> paramDownloadResponseMutableLiveData;
+    private final MutableLiveData<String> showFileContent = new MutableLiveData<>();
 
     public ParamViewModel(@NonNull Application application) {
         super(application);
         this.mInfo = new MutableLiveData<>();
+        this.paramDownloadResponseMutableLiveData = new MutableLiveData<>();
     }
 
     @Override
@@ -42,6 +50,14 @@ public class ParamViewModel extends BaseViewModel {
 
     public MutableLiveData<String> getInfo(){
         return mInfo;
+    }
+
+    public MutableLiveData<ParamDownloadResponse> getParamDownloadResponseMutableLiveData() {
+        return paramDownloadResponseMutableLiveData;
+    }
+
+    public MutableLiveData<String> getShowFileContent() {
+        return showFileContent;
     }
 
     private List<AppResponse> appResponseList= null;
@@ -78,7 +94,26 @@ public class ParamViewModel extends BaseViewModel {
                     paramDownloadRequest.setSaveFilePath(getApplication().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
                     paramDownloadRequest.setVersionCode(1);
                     paramDownloadRequest.setSerialNumber(paramAbility.getSerialNumber());
-                    paramAbility.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
+                    ParamDownloadResponse paramDownloadResponse = paramAbility.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
+                    paramDownloadResponseMutableLiveData.postValue(paramDownloadResponse);
+                }, this::showError)
+        );
+    }
+
+    public void readFile(String file){
+        addSubscribe(Observable.just(file)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(f -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        try {
+                            StringBuilder builder = new StringBuilder();
+                            Files.lines(Paths.get(file)).forEach(ele -> builder.append(ele).append("\n"));
+                            showFileContent.postValue(builder.toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }, this::showError)
         );
     }

@@ -1,7 +1,10 @@
 package com.android.newpos.store.sdk.demo.register;
 
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.DateKeyListener;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +59,12 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
             EditText editText = new EditText(requireActivity());
             editText.setHint(R.string.client_id_hint);
             editText.setText(AppUtils.getClientId());
+            editText.setFilters(new android.text.InputFilter[]{
+                    new android.text.InputFilter.LengthFilter(30)
+            });
+            editText.setInputType(InputType.TYPE_CLASS_TEXT);
+            editText.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+
             new AlertDialog.Builder(requireActivity())
                     .setTitle(R.string.app_name)
                     .setView(editText)

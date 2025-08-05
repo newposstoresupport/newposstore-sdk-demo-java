@@ -1,11 +1,10 @@
 package com.android.newpos.store.sdk.demo.lbs;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,9 +23,12 @@ import com.android.newpos.store.sdk.demo.base.BaseFragment;
  */
 public class LbsFragment extends BaseFragment<LbsViewModel> {
 
+    private FragmentLbsBinding binding;
+
     @Override
     public View getRoot(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
-        return FragmentLbsBinding.inflate(inflater, container, false).getRoot();
+        binding = FragmentLbsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -35,16 +37,12 @@ public class LbsFragment extends BaseFragment<LbsViewModel> {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.add(0, 1, 0, "getLocation");
-    }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == 1){
-            getViewModel().getLocation();
-        }
-        return super.onOptionsItemSelected(item);
+        final TextView locationView = binding.location;
+        getViewModel().mLocation.observe(getViewLifecycleOwner(), locationView::setText);
+
+        binding.getLocation.setOnClickListener(v -> getViewModel().getLocation());
     }
 }

@@ -1,12 +1,9 @@
 package com.android.newpos.store.sdk.demo;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
-
-import com.newpos.store.android.sdk.base.BaseApi;
 
 /**
  * @ClassName : MainFragment

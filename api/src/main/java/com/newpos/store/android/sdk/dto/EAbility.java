@@ -9,14 +9,15 @@ package com.newpos.store.android.sdk.dto;
  * @Description :
  * @website : <a href="https://www.newpostech.com/">...</a>
  */
-public enum EAbility {
+public enum EAbility {//TODO 待重构
     Lbs("lbs"),
     Param_Download("param"),
     Cloud_Message("cloud"),
     Go_Insight("go_insight"),
     Upgrade_("update"),
     OTA("ota"),
-    RKI("rki");
+    RKI("rki"),
+    APP("app");
 
     private String val;
 

@@ -8,7 +8,22 @@
 
     <string name="base">Basic Abilities</string>
     <string name="advanced">Advanced Capabilities</string>
+    <string name="common">Common Functions</string>
 
+    <string name="menu_common">Common Functions</string>
+    <string name="menu_common_detail">NEWSTORE provides information about calling NEWSTORE, opening the target menu page, opening the download list, opening system updates, etc.</string>
+    <string name="open_app_detail">Open the Store app page</string>
+    <string name="open_download_list">Open the download list</string>
+    <string name="open_system_update">Open the system update</string>
+
+    <string name="menu_app">App Management</string>
+    <string name="menu_app_detail">Application version query, application version download, application update installation, etc.</string>
+    <string name="get_apps">Query all applications</string>
+    <string name="check_for_update">check for update</string>
+    <string name="download_update">download update</string>
+    <string name="install_update">install update</string>
+    <string name="check_firstly">Please check the new version firstly!</string>
+    <string name="start_download">Download of %s has started</string>
 
     <string name="menu_register">Registration</string>
     <string name="menu_register_detail">The application information is registered to the platform server to obtain the corresponding enabled capabilities</string>
@@ -24,6 +39,7 @@
 
     <string name="menu_lbs">Lbs Positioning</string>
     <string name="menu_lbs_detail">Third-party applications use base stations to locate terminals</string>
+    <string name="get_location">get Location</string>
 
 
     <string name="menu_param">Parameters Download</string>
@@ -35,6 +51,7 @@
     <string name="menu_cloud">Cloud Message</string>
     <string name="menu_cloud_detail">Third-party applications receive push messages from the cloud platform by registering broadcast receivers</string>
     <string name="register_cloud_success">Successfully registered the cloud messaging capability</string>
+    <string name="unregister_cloud_success">Successfully unregistered the cloud messaging capability</string>
     <string name="cmr">You can view the detailed business logic in CloudMessageReceiver!\n We use static registration, you can also use dynamic registration</string>
     <string name="register">register</string>
     <string name="un_register">un_register</string>
@@ -73,4 +90,5 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="update_success">Update Client ID Success!</string>
+    <string name="download">download</string>
 </resources>

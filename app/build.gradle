@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.android.application'
 }
@@ -6,17 +8,18 @@ android {
     namespace 'com.android.newpos.store.sdk.demo'
     compileSdk 33
 
+    String version = new SimpleDateFormat("1.0.yyyyMMdd").format(new Date())
+
     defaultConfig {
         applicationId "com.android.newpos.store.sdk.demo"
         minSdk 22
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
-        //TODO 勿传
         newstore{
             keyAlias 'newstore'
             keyPassword 'newstore'
@@ -78,4 +81,9 @@ dependencies {
 
     implementation project(':api')
     implementation project(':aidl')
+
+    implementation "com.liulishuo.filedownloader:library:1.7.7"
+    implementation "cn.dreamtobe.filedownloader:filedownloader-okhttp3-connection:1.1.0"
+
+    implementation files("libs/android-baserecyle-master-v1.1.aar")
 }

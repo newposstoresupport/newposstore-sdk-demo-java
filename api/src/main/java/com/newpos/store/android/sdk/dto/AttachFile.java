@@ -1,5 +1,7 @@
 package com.newpos.store.android.sdk.dto;
 
+import androidx.annotation.NonNull;
+
 /**
  * @ClassName : AttachFile
  * @Author : zhouqiang(1376359644@qq.com)
@@ -38,4 +40,18 @@ public class AttachFile {
      * 文件路径
      */
     public String filePath;
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "AttachFile{" +
+                "patchType=" + patchType +
+                ", patchHash='" + patchHash + '\'' +
+                ", patchVer=" + patchVer +
+                ", patchUrl='" + patchUrl + '\'' +
+                ", fileSize=" + fileSize +
+                ", id=" + id +
+                ", filePath='" + filePath + '\'' +
+                '}';
+    }
 }

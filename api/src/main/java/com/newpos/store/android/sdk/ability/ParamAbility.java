@@ -18,6 +18,7 @@ import com.newpos.store.android.sdk.dto.PatchType;
 import com.newpos.store.android.sdk.dto.QueryResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -43,7 +44,13 @@ public class ParamAbility extends BaseAbility {
     public List<AppResponse> queryParamsList() throws BaseException {
         BaseLog.d("queryParamsList>>");
         String response = BaseApi.getInstance().queryAppAppendix(PatchType.PARAMS);
+        if(TextUtils.isEmpty(response)){
+            return new ArrayList<>();
+        }
         QueryResponse queryResponse = BaseUtils.toObject(response, QueryResponse.class);
+        if(queryResponse == null){
+            return new ArrayList<>();
+        }
         BaseLog.d("queryResponse:"+queryResponse);
         if(!Objects.equals(queryResponse.code, API_SUCCESS)){
             throw new BaseException(queryResponse.msg+"["+queryResponse.code+"]");
@@ -76,6 +83,11 @@ public class ParamAbility extends BaseAbility {
             localResponse = appResponse;
         }
 
+        if(localResponse == null){
+            BaseLog.e("parameters files is empty, please config.");
+            return null;
+        }
+
         //TODO 使用newstore测试
         if(!Objects.equals(localResponse.packageName, downloadRequest.getPackageName())){
             BaseLog.e("Package name does not match");
@@ -87,6 +99,7 @@ public class ParamAbility extends BaseAbility {
         paramDownloadResponse.packageName = localResponse.packageName;
         paramDownloadResponse.verCode = localResponse.verCode;
         paramDownloadResponse.verName = localResponse.verName;
+        paramDownloadResponse.attachFiles = new ArrayList<>();
         String saveFilePath = downloadRequest.getSaveFilePath();
         List<AttachFile> attachFiles = BaseUtils.toObject(localResponse.attachFiles, AttachFile.class);
         for (AttachFile file: attachFiles){
@@ -96,6 +109,7 @@ public class ParamAbility extends BaseAbility {
             } catch (IOException e) {
                 BaseLog.e("download "+file.patchUrl+" failed!");
             }
+            paramDownloadResponse.attachFiles.add(file);
         }
 
         return paramDownloadResponse;

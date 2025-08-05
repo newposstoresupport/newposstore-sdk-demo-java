@@ -1,6 +1,7 @@
 package com.android.newpos.store.sdk.demo.rki;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,14 +48,10 @@ public class RkiFragment extends BaseFragment<RkiViewModel> {
 
         binding.downloadCustomer.setOnClickListener(v -> {
             Toast.makeText(requireContext(), R.string.download_customer_keys_prompt, Toast.LENGTH_SHORT).show();
-            String kdhUrl = "";//from newstore platform
-            StoreSdk.getInstance().rkiAbility().downloadCustomerKeys(AppUtils.getClientId(), kdhUrl, (code, message, keyList) -> {
-
+            String kdhUrl = "http://10.1.42.63:6700/rki/";//from newstore platform
+            StoreSdk.getInstance().rkiAbility().downloadCustomerKeys(AppUtils.getClientId(), kdhUrl, "", (code, message, keyList) -> {
+                Log.e("IRkiCallback", "onDownload:"+code+","+message+","+keyList);
             });
-        });
-
-        binding.downloadCa.setOnClickListener(v -> {
-            StoreSdk.getInstance().rkiAbility().downloadRootCa();
         });
     }
 }
