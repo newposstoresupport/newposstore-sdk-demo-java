@@ -11,6 +11,7 @@ The service currently includes basic capabilities and advanced capabilities, as 
 2. [LBS Positioning for 3rd party app](docs/LbsIntegration.md)
 3. [Downloading parameters for 3rd party app](docs/DownloadIntegration.md)
 4. [OTA Upgrade](docs/OTAIntegration.md)
+4. [NewstoreSDK configuration for 3rd party app](docs/SDKConfigIntegration.md)
 # Advanced Capabilities
 1. [CloudMessage for 3rd party app](docs/CloudMsgIntegration.md)
 2. [NewInsight for 3rd party industry app](docs/GoInsightIntegration.md)
