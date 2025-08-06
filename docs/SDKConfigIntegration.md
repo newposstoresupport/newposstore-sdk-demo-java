@@ -2,10 +2,15 @@
 Use your email to register an account on the NEWSTORE developer platform and apply for enterprise developer certification. The website of the NEWSTORE platform is：[https://newposstore.com/account/login?redirect=/account](https://newposstore.com/account/login?redirect=/account "NEWPOSSTORE")
 # Create capability application #
 The operation steps for creating an ability application can be referred to in the current directory files "createAbilityApp.wmv".
+<video src="./files/createAbilityApp.wmv" controls width="600">
+  Your browser does not support video playback. Please switch to another browser.Your browser does not support video playback. Please switch to another browser and try again.
+</video>
+
 # Configure relevant parameters #
 ## config appKey infomation ##
 The parameters such as AppKey obtained through creating the capability application need to be configured in the MainApplication.java file of the app module of the current project. Of course, this is a demo project. The specific configuration location should be according to the requirements of the third-party APP project.
-！[image-appkeyinfo](./files/appkeyinfo.png)
+![appkeyinfo](./files/appkeyinfo.png)
+
 ## modify appliciationId ##
 Modify the applicationId in the project's build.gradle file to the package name configured when creating the capability application.
 # Do Test #
