@@ -2,9 +2,8 @@
 Use your email to register an account on the NEWSTORE developer platform and apply for enterprise developer certification. The website of the NEWSTORE platform is：[https://newposstore.com/account/login?redirect=/account](https://newposstore.com/account/login?redirect=/account "NEWPOSSTORE")
 # Create capability application #
 The operation steps for creating an ability application can be referred to in the current directory files "createAbilityApp.wmv".
-
-<video src="./files/createAbilityApp.wmv" width="800">
-    Your browser does not support video playback. Please switch to another browser.Your browser does not support video playback. Please switch to another browser and try again.
+<video src="./files/createAbilityApp.wmv" controls width="600">
+  Your browser does not support video playback. Please switch to another browser.Your browser does not support video playback. Please switch to another browser and try again.
 </video>
 
 # Configure relevant parameters #
