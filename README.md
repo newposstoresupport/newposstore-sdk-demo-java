@@ -40,7 +40,7 @@ Our [change log]() has release history.
 The latest release is available on [Maven Central](https://mvnrepository.com/).
 
 ```kotlin
-    implementation("com.newpos.xpos.sdk:xstore-sdk:1.0.0")
+    implementation("io.github.newposstoresupport:api:1.0.0")
 ```
 
 ## License
