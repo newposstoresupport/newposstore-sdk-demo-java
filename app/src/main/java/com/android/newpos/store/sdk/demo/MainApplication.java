@@ -167,6 +167,5 @@ public class MainApplication extends Application {
                         return FileDownloadUtils.md5(formatString("path:%s", path)).hashCode();
                     }
                 });
-        FileDownloadUtils.setDefaultSaveRootPath(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
     }
 }

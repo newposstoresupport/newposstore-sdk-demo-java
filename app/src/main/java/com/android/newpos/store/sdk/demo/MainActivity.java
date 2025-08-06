@@ -1,12 +1,14 @@
 package com.android.newpos.store.sdk.demo;
 
 import android.os.Bundle;
+import android.os.Environment;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.newpos.store.sdk.demo.databinding.ActivityMainBinding;
+import com.liulishuo.filedownloader.util.FileDownloadUtils;
 import com.newpos.store.android.sdk.StoreSdk;
 
 /**
@@ -43,5 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.container, new MainFragment())
                 .commit();
+
+        FileDownloadUtils.setDefaultSaveRootPath(getFilesDir().getAbsolutePath());
     }
 }
