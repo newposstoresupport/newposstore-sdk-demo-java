@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.library'
-    id("io.github.jeadyx.sonatype-uploader") version "2.8"
 }
 
 android {
@@ -45,5 +44,3 @@ dependencies {
     implementation project(':aidl')
     api(files('libs/rki_v1.2.250804.jar'))
 }
-
-apply from: "../publish.gradle"
