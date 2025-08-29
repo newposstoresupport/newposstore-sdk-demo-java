@@ -1,5 +1,6 @@
 package com.android.newpos.store.sdk.demo.cloud;
 
+import static com.android.newpos.store.sdk.demo.base.AppUtils.showToast;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_NOTIFICATION;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS;
 import static com.newpos.store.android.sdk.Constant.CM_DATA;
@@ -62,7 +63,7 @@ public class CloudMessageReceiver extends BroadcastReceiver {
         if(bundle == null){
             return;
         }
-        String data = bundle.getString(Constant.CM_DATA);
+        String data = bundle.getString(CM_DATA);
         BaseLog.d("handleMessage>data:"+data);
         JSONObject jsonObject = null;
         try {
@@ -85,15 +86,14 @@ public class CloudMessageReceiver extends BroadcastReceiver {
                 if(TextUtils.isEmpty(kdhUrl)){
                     return;
                 }
-                StoreSdk.getInstance().rkiAbility()
+                showToast(StoreSdk.getInstance().rkiAbility()
                         .downloadCustomerKeys(AppUtils.getClientId(), kdhUrl, messageId, (code, message, keyList)
-                                -> Log.e("IRkiCallback", "onDownload:"+code+","+message+","+keyList));
+                                -> Log.e("IRkiCallback", "onDownload:"+code+","+message+","+keyList)
+                        ).getMessage());
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            return;
         }
-
     }
 
     public void sendNotification(Context context, String title, String content, boolean sound, boolean bubble){
@@ -116,7 +116,9 @@ public class CloudMessageReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static NotificationChannel createChannel(Context context, String id, String name, boolean sound, boolean bubble){
         NotificationManager notificationManager = getNotificationManager(context);
-        if (notificationManager == null) return null;
+        if (notificationManager == null) {
+            return null;
+        }
         NotificationChannel channel = new NotificationChannel(id, name,
                 sound ? NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_MIN);
         channel.setLightColor(Color.GREEN);

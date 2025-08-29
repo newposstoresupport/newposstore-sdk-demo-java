@@ -1,6 +1,7 @@
 package com.android.newpos.store.sdk.demo.base;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.newpos.store.sdk.demo.R;
+import com.android.newpos.store.sdk.demo.app.LoadingDialog;
+import com.android.newpos.store.sdk.demo.app.LoadingDialogManage;
 
 /**
  * @ClassName : BaseFragment
@@ -43,17 +46,29 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
                 .setMessage(message)
                 .setPositiveButton(R.string.i_see, (dialog, which) -> dialog.dismiss())
                 .create().show());
+
+        viewModel.getLoading().observe(getViewLifecycleOwner(), option -> {
+            if(!option.loading){//TODO 优化成对象
+                LoadingDialogManage.getInstance().dismiss();
+            }else {
+                LoadingDialogManage.getInstance().show(getActivity(), option.loadingText);
+            }
+
+        });
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        viewModel.dismissLoading();
         viewModel.getService().shutdownNow();
         viewModel = null;
     }
 
     public abstract View getRoot(@NonNull LayoutInflater inflater, @Nullable ViewGroup container);
+
+
 
     public abstract Class<T> getClazz();
 

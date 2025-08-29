@@ -7,6 +7,7 @@ import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.newpos.store.sdk.demo.app.LoadingOption;
 import com.android.newpos.store.sdk.demo.base.BaseViewModel;
 import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.ability.ParamAbility;
@@ -60,9 +61,10 @@ public class ParamViewModel extends BaseViewModel {
         return showFileContent;
     }
 
-    private List<AppResponse> appResponseList= null;
+    private List<AppResponse> appResponseList = null;
 
     public void queryParamFile(){
+        showLoading(new LoadingOption("Querying parameter list..."));
         addSubscribe(Observable.just(true)
                 .observeOn(Schedulers.io())
                 .subscribe(n -> {
@@ -76,16 +78,22 @@ public class ParamViewModel extends BaseViewModel {
                         }
                         mInfo.postValue(builder.toString());
                     }
-                }, this::showError)
+                    dismissLoading();
+                }, throwable -> {
+                    dismissLoading();
+                    showError(throwable);
+                })
         );
     }
 
     public void downloadParamFile(){
+        showLoading(new LoadingOption("Downloading parameter file..."));
         addSubscribe(Observable.just(true)
                 .observeOn(Schedulers.io())
                 .subscribe(n -> {
                     if(appResponseList == null || appResponseList.isEmpty()){
                         mInfo.postValue("There is no parameter list, please query first!");
+                        dismissLoading();
                         return;
                     }
                     ParamAbility paramAbility = StoreSdk.getInstance().paramAbility();
@@ -96,11 +104,16 @@ public class ParamViewModel extends BaseViewModel {
                     paramDownloadRequest.setSerialNumber(paramAbility.getSerialNumber());
                     ParamDownloadResponse paramDownloadResponse = paramAbility.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
                     paramDownloadResponseMutableLiveData.postValue(paramDownloadResponse);
-                }, this::showError)
+                    dismissLoading();
+                }, throwable -> {
+                    dismissLoading();
+                    showError(throwable);
+                })
         );
     }
 
     public void readFile(String file){
+        showLoading(new LoadingOption("Reading file..."));
         addSubscribe(Observable.just(file)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -111,10 +124,14 @@ public class ParamViewModel extends BaseViewModel {
                             Files.lines(Paths.get(file)).forEach(ele -> builder.append(ele).append("\n"));
                             showFileContent.postValue(builder.toString());
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            showError(e);
                         }
                     }
-                }, this::showError)
+                    dismissLoading();
+                }, throwable -> {
+                    dismissLoading();
+                    showError(throwable);
+                })
         );
     }
 }

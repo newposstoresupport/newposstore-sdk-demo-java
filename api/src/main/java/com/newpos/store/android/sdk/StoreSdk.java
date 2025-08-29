@@ -117,7 +117,6 @@ public class StoreSdk {
                     initAbilities(ai);
                     callback.initSuccess();
                     semaphore.release(1);
-
                 }
 
                 @Override
@@ -126,11 +125,6 @@ public class StoreSdk {
                     semaphore.release(1);
                 }
             });
-        }else{
-            BaseLog.d("StoreSdk is already initialized, please do not initialize it repeatedly");
-            if(callback != null){
-                callback.initSuccess();
-            }
         }
     }
 

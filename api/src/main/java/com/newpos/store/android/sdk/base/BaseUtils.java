@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -72,8 +73,8 @@ public class BaseUtils {
             }else {
                 versionCode = packageInfo.versionCode;
             }
-            BaseLog.d("versionCode:"+versionCode);
-            BaseLog.d("versionName:"+packageInfo.versionName);
+            BaseLog.d("store versionCode:"+versionCode);
+            BaseLog.d("store versionName:"+packageInfo.versionName);
             return versionCode <= VERSION_0116;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -88,10 +89,19 @@ public class BaseUtils {
         final long G = M * K;
         final long T = G * K;
 
-        if (bytes >= T) return String.format(Locale.US, "%.2f TB", bytes / (double)T);
-        if (bytes >= G) return String.format(Locale.US, "%.2f GB", bytes / (double)G);
-        if (bytes >= M || bytes >= 1000 * K) return String.format(Locale.US, "%.2f MB", bytes / (double)M);
-        if (bytes >= K) return String.format(Locale.US, "%.2f KB", bytes / (double)K);
+        if (bytes >= T) {
+            return String.format(Locale.US, "%.2f TB", bytes / (double)T);
+        }
+        if (bytes >= G) {
+            return String.format(Locale.US, "%.2f GB", bytes / (double)G);
+        }
+        if (bytes >= M || bytes >= 1000 * K) {
+             return String.format(Locale.US, "%.2f MB", bytes / (double)M);
+        }
+        if (bytes >= K) {
+            return String.format(Locale.US, "%.2f KB", bytes / (double)K);
+        }
         return bytes + " B";
     }
+
 }

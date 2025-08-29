@@ -7,6 +7,7 @@ import static com.newpos.store.android.sdk.base.UrlConstant.LBS_CELL_QUERY;
 import static com.newpos.store.android.sdk.base.UrlConstant.LBS_WIFI_QUERY;
 import static com.newpos.store.android.sdk.base.UrlConstant.QUERY_APP_CONFIG;
 import static com.newpos.store.android.sdk.base.UrlConstant.QUERY_APP_UPDATE;
+import static com.newpos.store.android.sdk.base.UrlConstant.QUERY_KDH_URL;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,8 +18,10 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.ParcelUuid;
 import android.os.RemoteException;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.newpos.store.android.sdk.AidlConstant;
 import com.newpos.store.android.sdk.IAppInquirer;
@@ -33,6 +36,7 @@ import com.newpos.store.android.sdk.dto.CheckForUpdateRequest;
 import com.newpos.store.android.sdk.dto.LbsLocationRequest;
 import com.newpos.store.android.sdk.dto.LbsLocationResponse;
 import com.newpos.store.android.sdk.dto.PatchType;
+import com.newpos.store.android.sdk.dto.QueryKdhurlRequest;
 import com.newpos.store.android.sdk.dto.QueryRequest;
 import com.newpos.store.android.sdk.dto.QueryResponse;
 import com.newpos.store.android.sdk.listener.IApiCallback;
@@ -40,10 +44,12 @@ import com.newpos.store.android.sdk.listener.IApiCallback;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.function.ToDoubleBiFunction;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -90,7 +96,7 @@ public class BaseApi {
         init(c, elements, null, callback);
     }
 
-    public void init(Context c, final AppElements elements, AuthenticationRequest authenticationRequest, final IApiCallback callback){
+    public void init(Context c, final AppElements elements, AuthenticationRequest authenticationRequest, final IApiCallback callback) {
         this.mContext = c;
         if (deathRecipient == null) {
             deathRecipient = new IBinder.DeathRecipient() {
@@ -110,6 +116,7 @@ public class BaseApi {
                 }
             };
         }
+
         // 2. ServiceConnection
         if (serviceConnection == null) {
             serviceConnection = new ServiceConnection() {
@@ -117,36 +124,16 @@ public class BaseApi {
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     remoteBinder = service;
                     try {
-                        // 注册死亡通知监听
                         service.linkToDeath(deathRecipient, 0);
                     } catch (RemoteException e) {
                         BaseLog.e("linkToDeath error: " + e.getMessage());
                     }
                     try {
                         storeClient = IStoreClient.Stub.asInterface(service);
-                        AuthenticationInfo ai = null;
-                        if (BaseUtils.is0116NewStore(c)) {
-                            ai = storeClient.getAuthenticationInfo(elements);
-                        } else {
-                            ai = storeClient.getAuthenticationInfoEx(elements, authenticationRequest);
-                        }
-                        BaseLog.d("ai:" + ai);
-                        if (ai == null) {
-                            BaseLog.e(ERROR_MARKET_AUTHENTICATION);
-                            callback.initFailed(new RemoteException(ERROR_MARKET_AUTHENTICATION));
-                            mContext.unbindService(this);
-                            return;
-                        }
-                        if (TextUtils.isEmpty(ai.getBaseUrl())) {
-                            BaseLog.d(ai.getMessage());
-                            callback.initFailed(new RemoteException(ai.getMessage()));
-                            mContext.unbindService(this);
-                            return;
-                        }
-                        callback.initSuccess(ai);
-                    } catch (RemoteException e) {
+                        handleAuthentication(c, elements, authenticationRequest, callback);
+                    } catch (Exception e) {
                         BaseLog.e("get info from store error", e);
-                        callback.initFailed(e);
+                        callback.initFailed(new RemoteException(e.getMessage()));
                     }
                 }
 
@@ -157,8 +144,42 @@ public class BaseApi {
                     registerInquirer = false;
                 }
             };
+            bindStoreService(elements, authenticationRequest, callback);
+        } else {
+            if (storeClient != null) {
+                handleAuthentication(c, elements, authenticationRequest, callback);
+            }
         }
-        bindStoreService(elements, authenticationRequest, callback);
+    }
+
+
+    private void handleAuthentication(Context c, AppElements elements, AuthenticationRequest authenticationRequest, IApiCallback callback) {
+        try {
+            AuthenticationInfo ai;
+            if (BaseUtils.is0116NewStore(c)) {
+                BaseLog.w("handleAuthentication >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
+                Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
+                ai = storeClient.getAuthenticationInfo(elements);
+            } else {
+                ai = storeClient.getAuthenticationInfoEx(elements, authenticationRequest);
+            }
+            BaseLog.d("ai:" + ai);
+
+            if (ai == null) {
+                BaseLog.e(ERROR_MARKET_AUTHENTICATION);
+                callback.initFailed(new RemoteException(ERROR_MARKET_AUTHENTICATION));
+                return;
+            }
+            if (TextUtils.isEmpty(ai.getBaseUrl())) {
+                BaseLog.d(ai.getMessage());
+                callback.initFailed(new RemoteException(ai.getMessage()));
+                return;
+            }
+            callback.initSuccess(ai);
+        } catch (RemoteException e) {
+            BaseLog.e("get info from store error", e);
+            callback.initFailed(e);
+        }
     }
 
     private void bindStoreService(AppElements elements, AuthenticationRequest authenticationRequest, IApiCallback callback) {
@@ -197,6 +218,8 @@ public class BaseApi {
         }
 
         if(BaseUtils.is0116NewStore(getContext())){
+            BaseLog.w("getAuthenticationInfo >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
+            Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
             return getAuthenticationInfo();
         }
 
@@ -239,18 +262,6 @@ public class BaseApi {
             appQuery.verName = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException ignore) {}
 
-        //TODO 使用newstore测试
-//        {
-//            //生产
-//            appQuery.packageName = "com.newpos.store.android.app";
-//            appQuery.verName = "1.0.20250116";
-//            appQuery.verCode = 2;
-//
-//            //开发
-//            appQuery.verName = "1.0.20241218";
-//            appQuery.verCode = 1;
-//        }
-
         AttachFile attachFile = new AttachFile();
         attachFile.patchType = patchType.ordinal();
         List<AttachFile> attachFiles = new ArrayList<>();
@@ -265,6 +276,7 @@ public class BaseApi {
             String response = "";
             if(BaseUtils.is0116NewStore(mContext)){
                 response = storeClient.queryAppConfig(request);
+
             }else {
                 response = storeClient.dynamicRequest(QUERY_APP_CONFIG, null, request);
             }
@@ -283,7 +295,8 @@ public class BaseApi {
         }
 
         if(BaseUtils.is0116NewStore(mContext)){
-            BaseLog.w("NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
+            Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
+            BaseLog.w("requestLocation >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
             return null;
         }
 
@@ -336,6 +349,13 @@ public class BaseApi {
 
         String request = BaseUtils.toJson(checkForUpdateRequest);
         BaseLog.d("request:"+request);
+
+        if(BaseUtils.is0116NewStore(mContext)){
+            Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
+            BaseLog.w("requestLocation >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
+            return null;
+        }
+
         try {
             String response = storeClient.dynamicRequest(QUERY_APP_UPDATE, null, request);
             BaseLog.d("response:"+response);
@@ -346,6 +366,33 @@ public class BaseApi {
 
         return null;
     }
+
+    public String queryKdhurl(QueryKdhurlRequest queryKdhurlRequest){
+        if(storeClient == null){
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+        String request = BaseUtils.toJson(queryKdhurlRequest);
+        BaseLog.d("request:"+request);
+
+        if(BaseUtils.is0116NewStore(mContext)){
+            Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
+            BaseLog.w("requestLocation >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
+            return null;
+        }
+
+        try {
+
+            String response = storeClient.dynamicRequest(QUERY_KDH_URL, null, request);
+            BaseLog.d("response:"+response);
+            return  response;
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     private final OkHttpClient client = new OkHttpClient.Builder()
             .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))

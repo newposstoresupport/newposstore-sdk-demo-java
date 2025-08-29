@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.newpos.store.sdk.demo.app.LoadingOption;
 import com.android.newpos.store.sdk.demo.base.BaseViewModel;
 import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.base.BaseUtils;
@@ -13,26 +14,22 @@ import com.newpos.store.android.sdk.dto.LbsLocationRequest;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * @ClassName : LbsViewModel
- * @Author : zhouqiang(1376359644@qq.com)
- * @Email : newpos@newpostech.com
- * @Date : 2024/3/28-12:40
- * @Version : 1.0
- * @Description :
- * @website : <a href="https://www.newpostech.com/">...</a>
- */
 public class LbsViewModel extends BaseViewModel {
 
+
     public final MutableLiveData<String> mLocation;
+    public final MutableLiveData<String> logs;
 
     public LbsViewModel(@NonNull Application application) {
         super(application);
         mLocation = new MutableLiveData<>();
+        logs = new MutableLiveData<>();
     }
 
     public void getLocation(){
         mLocation.postValue("Retrieving location information...");
+        appendLog("Retrieving location information...");
+
         LbsLocationRequest lbsLocationRequest = new LbsLocationRequest();
         lbsLocationRequest.setOutput("json");
         lbsLocationRequest.setMnc("0");
@@ -42,25 +39,40 @@ public class LbsViewModel extends BaseViewModel {
         lbsLocationRequest.setLac("9763");
         lbsLocationRequest.setRadio("LTE");
 
+        showLoading(new LoadingOption("Retrieving location information..."));
         addSubscribe(Observable.just(lbsLocationRequest)
                 .observeOn(Schedulers.io())
                 .map(request -> StoreSdk.getInstance().lbsAbility().getLocation(request, false))
 
                 .subscribe(response -> {
-                    if(response == null){
-                        mLocation.postValue("get location failed, please check log!");
+                    dismissLoading();
+
+                    if (response == null) {
+                        String failMsg = "Get location failed, please check log!";
+                        mLocation.postValue(failMsg);
+                        appendLog(failMsg);
                         return;
                     }
+                    String json = BaseUtils.toJson(response);
+                    mLocation.postValue(json);
+                    appendLog("Locating successfully: " + json);
 
-                    mLocation.postValue(BaseUtils.toJson(response));
-                }, this::showError)
+                }, throwable -> {
+                    dismissLoading();
+                    showError(throwable);
+                })
         );
+    }
+
+    public void appendLog(String msg){
+        logs.postValue(msg);
     }
 
     @Override
     protected void showError(Throwable throwable) {
         super.showError(throwable);
         mLocation.postValue("");
+        appendLog("LBS Error: " + throwable.getMessage());
     }
 
     @Override

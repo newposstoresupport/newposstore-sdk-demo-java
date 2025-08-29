@@ -1,6 +1,14 @@
 package com.android.newpos.store.sdk.demo.base;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import com.android.newpos.store.sdk.demo.MainApplication;
 import com.tencent.mmkv.MMKV;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @ClassName : AppUtils
@@ -21,5 +29,18 @@ public class AppUtils {
 
     public static String getClientId(){
         return mmkv.decodeString(CLIENT_ID);
+    }
+
+    public static void showToast(String message) {
+        Disposable d= Observable.just( true)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(b -> Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_SHORT).show(),
+                throwable -> {
+                    Log.e("showToast", "Error while showing toast: " + throwable.getMessage(), throwable);
+                }
+                );
+    }
+    public static void showToast(int msgId) {
+        showToast(MainApplication.getContext().getString(msgId));
     }
 }

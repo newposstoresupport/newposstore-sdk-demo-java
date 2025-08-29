@@ -88,7 +88,6 @@ public class ParamAbility extends BaseAbility {
             return null;
         }
 
-        //TODO 使用newstore测试
         if(!Objects.equals(localResponse.packageName, downloadRequest.getPackageName())){
             BaseLog.e("Package name does not match");
             return null;

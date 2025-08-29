@@ -1,10 +1,10 @@
 package com.android.newpos.store.sdk.demo.register;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.text.method.DateKeyListener;
-import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.android.newpos.store.sdk.demo.MainApplication;
 import com.android.newpos.store.sdk.demo.R;
+import com.android.newpos.store.sdk.demo.app.LoadingDialogManage;
 import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.android.newpos.store.sdk.demo.base.BaseFragment;
 import com.android.newpos.store.sdk.demo.databinding.FragmentRegisterBinding;
@@ -33,6 +34,7 @@ import com.android.newpos.store.sdk.demo.databinding.FragmentRegisterBinding;
  */
 public class RegisterFragment extends BaseFragment<RegisterViewModel> {
     private FragmentRegisterBinding binding;
+
     @Override
     public View getRoot(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
@@ -51,10 +53,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
         TextView clientIdView = binding.clientIdView;
         clientIdView.setText(AppUtils.getClientId());
 
-        binding.register.setOnClickListener(v -> {
-            MainApplication.getInstance().initStoreSdk(AppUtils.getClientId());
-        });
-
+        binding.register.setOnClickListener(v -> getViewModel().register());
         binding.clientId.setOnClickListener(v -> {
             EditText editText = new EditText(requireActivity());
             editText.setHint(R.string.client_id_hint);
@@ -63,7 +62,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
                     new android.text.InputFilter.LengthFilter(30)
             });
             editText.setInputType(InputType.TYPE_CLASS_TEXT);
-            editText.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+            //editText.setKeyListener(DigitsKeyListener.getInstance("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 
             new AlertDialog.Builder(requireActivity())
                     .setTitle(R.string.app_name)

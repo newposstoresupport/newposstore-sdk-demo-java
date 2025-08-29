@@ -53,7 +53,11 @@ public class AppViewModel extends BaseViewModel {
     /**
      * Get the application by the specified package name
      */
+    /**
+     * Get the application by the specified package name
+     */
     public void getAppsByPackageName(){
+        showLoading(new LoadingOption("Loading apps..."));
         addSubscribe(Observable.just(true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -76,7 +80,11 @@ public class AppViewModel extends BaseViewModel {
                         appDownloadStatuses.add(downloadStatus);
                     }
                     appList.postValue(appDownloadStatuses);
-                }, this::showError)
+                    dismissLoading();
+                }, e -> {
+                    dismissLoading();
+                    showError(e);
+                })
         );
     }
 
@@ -84,6 +92,7 @@ public class AppViewModel extends BaseViewModel {
      * Check for new app versions
      */
     public void checkForUpdates(String packageName){
+        showLoading(new LoadingOption("Checking for updates..."));
         addSubscribe(Observable.just(true)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -95,7 +104,11 @@ public class AppViewModel extends BaseViewModel {
                     Toast.makeText(getApplication(),
                             getApplication().getString(R.string.start_download, newApp.toString()),
                             Toast.LENGTH_SHORT).show();
-                }, this::showError)
+                    dismissLoading();
+                }, e -> {
+                    dismissLoading();
+                    showError(e);
+                })
         );
     }
 
@@ -104,27 +117,35 @@ public class AppViewModel extends BaseViewModel {
      * @param storeApp StoreApp
      */
     public void downloadForUpdates(StoreApp storeApp){
+        showLoading(new LoadingOption("Downloading app..."));
         String storagePath = FileDownloadUtils.generateFilePath(FileDownloadUtils.getDefaultSaveRootPath(),
                 FileDownloadUtils.md5(FileDownloadUtils.formatString("%s:%s",
                         storeApp.packageName, storeApp.verCode)));
         System.out.println(storagePath);
         System.out.println(storeApp.appFile);
         addSubscribe(Observable.fromCallable(FileDownloader.getImpl()
-                .create(storeApp.appFile)
-                .setPath(storagePath, false)
-                .setAutoRetryTimes(3)
-                .setCallbackProgressTimes(500)
-                .setMinIntervalUpdateSpeed(500)
-                .setCallbackProgressMinInterval(500)
-                .setListener(new AppStatusManager(storeApp.packageName))::start)
+                        .create(storeApp.appFile)
+                        .setPath(storagePath, false)
+                        .setAutoRetryTimes(3)
+                        .setCallbackProgressTimes(500)
+                        .setMinIntervalUpdateSpeed(500)
+                        .setCallbackProgressMinInterval(500)
+                        .setListener(new AppStatusManager(storeApp.packageName))::start)
                 .subscribeOn(Schedulers.io())
 
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> Toast.makeText(getApplication(),
-                        getApplication().getString(R.string.start_download, storeApp.progName),
-                        Toast.LENGTH_SHORT).show(), this::showError)
+                .subscribe(integer -> {
+                    Toast.makeText(getApplication(),
+                            getApplication().getString(R.string.start_download, storeApp.progName),
+                            Toast.LENGTH_SHORT).show();
+                    dismissLoading();
+                }, e -> {
+                    dismissLoading();
+                    showError(e);
+                })
         );
     }
+
 
     private static final String TAG = "AppDownloader";
     private final class AppStatusManager extends FileDownloadListener {

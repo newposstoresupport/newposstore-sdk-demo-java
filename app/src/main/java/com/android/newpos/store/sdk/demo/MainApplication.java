@@ -1,12 +1,15 @@
 package com.android.newpos.store.sdk.demo;
 
+import static com.android.newpos.store.sdk.demo.base.AppUtils.showToast;
 import static com.liulishuo.filedownloader.util.FileDownloadUtils.formatString;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -15,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.android.newpos.store.sdk.demo.app.InitCallback;
+import com.android.newpos.store.sdk.demo.app.LoadingDialogManage;
 import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.android.newpos.store.sdk.demo.inquirer.AppInquirerViewModel;
 import com.liulishuo.filedownloader.FileDownloader;
@@ -30,6 +35,8 @@ import com.newpos.store.android.sdk.listener.IStoreCallback;
 import com.tencent.mmkv.MMKV;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -51,11 +58,18 @@ public class MainApplication extends Application {
     private static final String AppId = "32292cc7e05a2b86ddea1d6746210283";
     private static final String AppKey = "c3ff54daf66bbbd2e8d8dbf08172a5aa";
     private static final String AppSecret = "a8e2188e9474692ea6a538f0a4f955ab";
+    private static final ExecutorService INIT_EXECUTOR = Executors.newSingleThreadExecutor();
+
+    private static final LoadingDialogManage ld = null;
 
     private static MainApplication mainApplication;
 
     public static MainApplication getInstance(){
         return mainApplication;
+    }
+
+    public static Context getContext() {
+        return mainApplication.getApplicationContext();
     }
 
     @Override
@@ -64,15 +78,21 @@ public class MainApplication extends Application {
         System.out.println("MainApplication>>onCreate");
         mainApplication = this;
         MMKV.initialize(this);
-        initDownloader();
-        initStoreSdk(AppUtils.getClientId());
         SPreference.I().init(getApplicationContext());
+        INIT_EXECUTOR.execute(() -> {
+            try {
+                initDownloader();
+                initStoreSdk(AppUtils.getClientId(), null);
+            } catch (Throwable ignored) {}
+        });
+
     }
 
-    public void initStoreSdk(String clientId){
+    public void initStoreSdk(String clientId, InitCallback callback){
         //TODO step 2
         // download newpos store sdk from github
         // and init StoreSdk by appid & appkey & appsecret
+
         AppElements elements = new AppElements();
         elements.setAppId(AppId);
         elements.setAppKey(AppKey);
@@ -89,19 +109,25 @@ public class MainApplication extends Application {
         StoreSdk.getInstance().init(getApplicationContext(), elements, request, new IStoreCallback() {
             @Override
             public void initSuccess() {
-                Toast.makeText(getApplicationContext(), R.string.init_success, Toast.LENGTH_SHORT).show();
+                showToast(R.string.init_success);
                 initAppInquirer();
+                if(callback != null) {
+                    callback.onFinished();
+                }
             }
 
             @Override
             public void initFailed(RemoteException remoteException) {
                 String message = remoteException.getMessage() + "\n";
                 message += getString(R.string.newstore_lost);
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                //showDialog(message);
+                showToast(message);
+                if(callback != null) {
+                    callback.onFinished();
+                }
             }
         });
     }
+
 
     private void initAppInquirer(){
         //TODO step 3

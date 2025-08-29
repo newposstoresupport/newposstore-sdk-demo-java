@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.newpos.store.sdk.demo.R;
+import com.android.newpos.store.sdk.demo.app.LoadingOption;
 import com.newpos.store.android.sdk.base.BaseException;
 import com.newpos.store.android.sdk.base.BaseLog;
 
@@ -35,11 +36,13 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseViewModel extends AndroidViewModel {
     private final MutableLiveData<String> mText;
     private final MutableLiveData<String> mDialog;
+    private final MutableLiveData<LoadingOption> mLoading;
     public BaseViewModel(@NonNull Application application) {
         super(application);
         mText = new MutableLiveData<>();
         mText.setValue(getTitle());
         mDialog = new MutableLiveData<>();
+        mLoading = new MutableLiveData<>();
     }
 
     public abstract String getTitle();
@@ -50,6 +53,10 @@ public abstract class BaseViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> getDialog(){
         return mDialog;
+    }
+
+    public MutableLiveData<LoadingOption> getLoading(){
+        return mLoading;
     }
 
     public ExecutorService executorService;
@@ -71,11 +78,20 @@ public abstract class BaseViewModel extends AndroidViewModel {
     }
 
     protected void showError(Throwable throwable){
+        dismissLoading();
         String msg = throwable.getMessage();
         if(throwable instanceof BaseException){
             msg = ((BaseException) throwable).msg;
         }
         mDialog.postValue(msg);
+    }
+
+    protected void showLoading(LoadingOption msg){
+        mLoading.postValue(msg);
+    }
+
+    protected void dismissLoading(){
+        mLoading.postValue(new LoadingOption(false));
     }
 
     @Override

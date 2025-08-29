@@ -1,6 +1,10 @@
 package com.android.newpos.store.sdk.demo.rki;
 
+import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS;
+import static com.newpos.store.android.sdk.Constant.CM_MSGID;
+
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +18,12 @@ import com.android.newpos.store.sdk.demo.R;
 import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.android.newpos.store.sdk.demo.base.BaseFragment;
 import com.android.newpos.store.sdk.demo.databinding.FragmentRkiBinding;
+import com.newpos.store.android.sdk.Constant;
 import com.newpos.store.android.sdk.StoreSdk;
+import com.newpos.store.android.sdk.ability.RkiAbility;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @ClassName : RkiFragment
@@ -42,16 +51,16 @@ public class RkiFragment extends BaseFragment<RkiViewModel> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.bind.setOnClickListener(v -> {
-            StoreSdk.getInstance().rkiAbility().bindRkiService();
-        });
+        binding.bind.setOnClickListener(v -> getViewModel().bind());
 
-        binding.downloadCustomer.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), R.string.download_customer_keys_prompt, Toast.LENGTH_SHORT).show();
-            String kdhUrl = "http://10.1.42.63:6700/rki/";//from newstore platform
-            StoreSdk.getInstance().rkiAbility().downloadCustomerKeys(AppUtils.getClientId(), kdhUrl, "", (code, message, keyList) -> {
-                Log.e("IRkiCallback", "onDownload:"+code+","+message+","+keyList);
-            });
-        });
+        binding.downloadCustomer.setOnClickListener(v -> getViewModel().download());
+
+        getViewModel().mKdh.observe(getViewLifecycleOwner(), this::appendLog);
+
+    }
+    private void appendLog(String message) {
+        String old = binding.tvRkiResult.getText().toString();
+        binding.tvRkiResult.setText(old + "\n" + message);
+        binding.scrollResult.post(() -> binding.scrollResult.fullScroll(View.FOCUS_DOWN));
     }
 }

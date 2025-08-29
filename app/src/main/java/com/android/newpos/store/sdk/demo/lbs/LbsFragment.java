@@ -44,5 +44,13 @@ public class LbsFragment extends BaseFragment<LbsViewModel> {
         getViewModel().mLocation.observe(getViewLifecycleOwner(), locationView::setText);
 
         binding.getLocation.setOnClickListener(v -> getViewModel().getLocation());
+
+        getViewModel().logs.observe(getViewLifecycleOwner(), this::appendLog);
+    }
+
+    private void appendLog(String text) {
+        String old = binding.tvLbsResult.getText().toString();
+        binding.tvLbsResult.setText((old + "\n" + text).trim());
+        binding.scrollResult.post(() -> binding.scrollResult.fullScroll(View.FOCUS_DOWN));
     }
 }

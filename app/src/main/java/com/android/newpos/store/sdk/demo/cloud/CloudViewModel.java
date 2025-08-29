@@ -21,6 +21,8 @@ public class CloudViewModel extends BaseViewModel {
         super(application);
     }
 
+
+
     @Override
     public String getTitle() {
         return "Cloud Message";
