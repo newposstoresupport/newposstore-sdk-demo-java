@@ -8,7 +8,7 @@ android {
     namespace 'com.android.newpos.store.sdk.demo'
     compileSdk 33
 
-    String version = new SimpleDateFormat("1.0.yyyyMMdd").format(new Date())
+    String version = new SimpleDateFormat("1.0.yyyyMMddHHmmss").format(new Date())
 
     defaultConfig {
         applicationId "com.android.newpos.store.sdk.demo"
@@ -82,7 +82,7 @@ dependencies {
     //implementation project(':aidl')
 
     //Dependency central warehouse
-    implementation "io.github.newposstoresupport:api:1.0.0"
+    implementation "io.github.newposstoresupport:api:1.0.1"
     implementation "io.github.newposstoresupport:aidl:1.1"
 
     implementation 'com.squareup.okhttp3:okhttp:4.2.0'
