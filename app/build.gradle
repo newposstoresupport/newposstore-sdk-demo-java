@@ -11,7 +11,7 @@ android {
     String version = new SimpleDateFormat("1.0.yyyyMMddHHmmss").format(new Date())
 
     defaultConfig {
-        applicationId "com.android.newpos.store.sdk.demo"
+        applicationId "com.android.newpos.store.sdk.demo.xiaobo"
         minSdk 22
         targetSdk 33
         versionCode 1

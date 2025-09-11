@@ -29,12 +29,29 @@ public class LbsViewModel extends BaseViewModel {
     public void getLocation(){
         mLocation.postValue("Retrieving location information...");
         appendLog("Retrieving location information...");
-
+        /*{
+            "ci": "46407687",
+            "lac": "9763",
+            "mcc": "460",
+            "mnc": "0",
+            "output": "json",
+            "radio": "LTE",
+            "terminal": {
+                "lang": "en-US",
+                "model": "NEW9830",
+                "sn": "H3R000300000112",
+                "vendor": "NEWPOS",
+                "cid": 8888,
+                "os": 0,
+                "debug": "1",
+                "sdkVer": 33
+            }
+        }*/
         LbsLocationRequest lbsLocationRequest = new LbsLocationRequest();
         lbsLocationRequest.setOutput("json");
         lbsLocationRequest.setMnc("0");
         lbsLocationRequest.setCi("46407687");
-        lbsLocationRequest.setAppid("OTA_LBS");
+        lbsLocationRequest.setAppid("270203b4858e70879a69fedaba23da6c");
         lbsLocationRequest.setMcc("460");
         lbsLocationRequest.setLac("9763");
         lbsLocationRequest.setRadio("LTE");

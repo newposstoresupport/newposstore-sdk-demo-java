@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.android.newpos.store.sdk.demo",
+  "applicationId": "com.android.newpos.store.sdk.demo.xiaobo",
   "variantName": "release",
   "elements": [
     {
@@ -12,8 +12,8 @@
       "filters": [],
       "attributes": [],
       "versionCode": 1,
-      "versionName": "1.0",
-      "outputFile": "NewStoreSdkDemo-1.0-release.apk"
+      "versionName": "1.0.20250905095623",
+      "outputFile": "NewStoreSdkDemo-1.0.20250905095623-release.apk"
     }
   ],
   "elementType": "File",
@@ -22,14 +22,14 @@
       "minApi": 28,
       "maxApi": 30,
       "baselineProfiles": [
-        "baselineProfiles/1/NewStoreSdkDemo-1.0-release.dm"
+        "baselineProfiles/1/NewStoreSdkDemo-1.0.20250905095623-release.dm"
       ]
     },
     {
       "minApi": 31,
       "maxApi": 2147483647,
       "baselineProfiles": [
-        "baselineProfiles/0/NewStoreSdkDemo-1.0-release.dm"
+        "baselineProfiles/0/NewStoreSdkDemo-1.0.20250905095623-release.dm"
       ]
     }
   ],
