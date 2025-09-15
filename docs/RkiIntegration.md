@@ -54,7 +54,7 @@ The process of importing anonymous keys is rather complicated, involving key tra
 
 ``
 
-```
+```java
 public boolean bindRkiService() {
     Context context = BaseApi.getInstance().getContext();
     Intent intent = new Intent("com.newpos.rki.core.rkiservice");
@@ -69,7 +69,7 @@ public boolean bindRkiService() {
 
 ``
 
-```
+```java
 public QueryKdhurlResponse getKdhUrl(QueryKdhurlRequest queryKdhurlRequest) throws BaseException {
     
 }
@@ -79,7 +79,7 @@ public QueryKdhurlResponse getKdhUrl(QueryKdhurlRequest queryKdhurlRequest) thro
 
 ``
 
-```
+```java
 public RkiCode downloadCustomerKeys(String clientId, String kdhUrl, String messageId, final IRkiCallback callback) {
    
 }
