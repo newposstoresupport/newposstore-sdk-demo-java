@@ -172,5 +172,5 @@ public void downloadParamFile(){
 
 Example of successful download of parameter file
 
-![](./files\parameterfilelocal.png)
+![](./files/parameterfilelocal.png)
 
