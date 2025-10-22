@@ -1,11 +1,20 @@
 package com.android.newpos.store.sdk.demo;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.window.layout.WindowMetrics;
+import androidx.window.layout.WindowMetricsCalculator;
 
 import com.android.newpos.store.sdk.demo.databinding.ActivityMainBinding;
 import com.liulishuo.filedownloader.util.FileDownloadUtils;
@@ -26,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -46,6 +54,39 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.container, new MainFragment())
                 .commit();
 
+        updateHeaderVisibility(true);
         FileDownloadUtils.setDefaultSaveRootPath(getFilesDir().getAbsolutePath());
     }
+
+    public boolean isPhysical480x480Device(Context context) {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(dm);
+
+        int w = dm.widthPixels;
+        int h = dm.heightPixels;
+
+        boolean square = Math.abs(w - h) <= 10;
+
+        double wIn = w / dm.xdpi;
+        double hIn = h / dm.ydpi;
+        double diag = Math.hypot(wIn, hIn);
+
+        return square && diag <= 4.5;
+    }
+
+    public void updateHeaderVisibility(boolean isMainPage) {
+        if (isPhysical480x480Device(this)) {
+            setHeaderVisible(isMainPage);
+        } else {
+            setHeaderVisible(true);
+        }
+    }
+
+    private void setHeaderVisible(boolean visible) {
+        View header = findViewById(R.id.header);
+        View container = findViewById(R.id.container);
+        ConstraintLayout root = findViewById(R.id.root);
+        header.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
 }

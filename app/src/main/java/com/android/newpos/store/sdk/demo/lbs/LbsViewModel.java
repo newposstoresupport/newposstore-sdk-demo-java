@@ -27,9 +27,11 @@ public class LbsViewModel extends BaseViewModel {
     }
 
     public void getLocation(){
+
         mLocation.postValue("Retrieving location information...");
         appendLog("Retrieving location information...");
 
+        //TODO: make sure to replace with your own parameter
         LbsLocationRequest lbsLocationRequest = new LbsLocationRequest();
         lbsLocationRequest.setOutput("json");
         lbsLocationRequest.setMnc("0");

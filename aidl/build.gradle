@@ -38,10 +38,8 @@ dependencies {
 }
 
 task makeAidlJar(type: Jar) {
-    //def version = "1.0"//初版
-    def version = "1.1"//增加dynamicRequest接口
     from zipTree(file('build/intermediates/aar_main_jar/debug/syncDebugLibJars/classes.jar'))
-    archiveBaseName = "storesdk-aidl-v${version}"
+    archiveBaseName = "storesdk-aidl"
     exclude('test/','BuildConfig.class','R.class')
     exclude{ it.name.startsWith('R$') }
 }

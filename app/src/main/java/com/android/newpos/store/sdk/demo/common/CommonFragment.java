@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.newpos.store.sdk.demo.MainActivity;
 import com.android.newpos.store.sdk.demo.base.BaseFragment;
 import com.android.newpos.store.sdk.demo.databinding.FragmentCommonBinding;
 import com.newpos.store.android.sdk.StoreSdk;
@@ -38,11 +39,24 @@ public class CommonFragment extends BaseFragment<CommonViewModel> {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+
         //TODO 考虑增加输入包名或者选择列表
+        //TODO Consider adding input package name or selecting from a list
         binding.openAppDetail.setOnClickListener(v -> StoreSdk.getInstance().openAppDetail("com.newpos.rki"));
 
         binding.openDownloadList.setOnClickListener(v -> StoreSdk.getInstance().openDownloadList());
 
         binding.openSystemUpdate.setOnClickListener(v -> StoreSdk.getInstance().openOtaUpdate());
+
+        binding.openNewstore.setOnClickListener(v -> StoreSdk.getInstance().openNewstore());
+
+        binding.openUpdatable.setOnClickListener(v -> StoreSdk.getInstance().openUpdatable());
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
     }
 }

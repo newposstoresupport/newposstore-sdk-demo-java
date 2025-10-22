@@ -11,17 +11,14 @@ import com.newpos.store.android.sdk.base.BaseLog;
 import com.newpos.store.android.sdk.base.BaseUtils;
 import com.newpos.store.android.sdk.dto.AppElements;
 import com.newpos.store.android.sdk.dto.AppResponse;
-import com.newpos.store.android.sdk.dto.AttachFile;
 import com.newpos.store.android.sdk.dto.ParamDownloadRequest;
 import com.newpos.store.android.sdk.dto.ParamDownloadResponse;
 import com.newpos.store.android.sdk.dto.PatchType;
 import com.newpos.store.android.sdk.dto.QueryResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * @ClassName : ParamAbility
@@ -58,64 +55,8 @@ public class ParamAbility extends BaseAbility {
         return BaseUtils.toObject(queryResponse.data, AppResponse.class);
     }
 
-    /**
-     * Download Parameters
-     * @param downloadRequest Download Request {@link ParamDownloadRequest}
-     * @param appResponse Application parameter file configuration response {@link AppResponse}
-     * @return Download results {@link ParamDownloadResponse}
-     * @throws BaseException
-     */
-    public ParamDownloadResponse downloadParamToPath(ParamDownloadRequest downloadRequest, AppResponse appResponse) throws BaseException {
-        BaseLog.d("downloadParamToPath>>"+downloadRequest);
-        if(downloadRequest == null){
-            throw new IllegalArgumentException("downloadRequest is null!");
-        }
-        if(TextUtils.isEmpty(downloadRequest.getPackageName())){
-            throw new IllegalArgumentException("packageName is null!");
-        }
-        if(TextUtils.isEmpty(downloadRequest.getSaveFilePath())){
-            throw new IllegalArgumentException("saveFilePath is null!");
-        }
-        AppResponse localResponse = null;
-        if(appResponse == null){
-            localResponse = queryParamsList().get(0);
-        }else {
-            localResponse = appResponse;
-        }
-
-        if(localResponse == null){
-            BaseLog.e("parameters files is empty, please config.");
-            return null;
-        }
-
-        if(!Objects.equals(localResponse.packageName, downloadRequest.getPackageName())){
-            BaseLog.e("Package name does not match");
-            return null;
-        }
-
-        ParamDownloadResponse paramDownloadResponse = new ParamDownloadResponse();
-        paramDownloadResponse.appId = localResponse.appId;
-        paramDownloadResponse.packageName = localResponse.packageName;
-        paramDownloadResponse.verCode = localResponse.verCode;
-        paramDownloadResponse.verName = localResponse.verName;
-        paramDownloadResponse.attachFiles = new ArrayList<>();
-        String saveFilePath = downloadRequest.getSaveFilePath();
-        List<AttachFile> attachFiles = BaseUtils.toObject(localResponse.attachFiles, AttachFile.class);
-        for (AttachFile file: attachFiles){
-            String fileName = "file_" + System.currentTimeMillis() + "_" + new Random().nextInt(10000);
-            try {
-                file.filePath = BaseApi.getInstance().downloadFile(file.patchUrl, saveFilePath+"/"+fileName);
-            } catch (IOException e) {
-                BaseLog.e("download "+file.patchUrl+" failed!");
-            }
-            paramDownloadResponse.attachFiles.add(file);
-        }
-
-        return paramDownloadResponse;
-    }
-
     public ParamDownloadResponse downloadLastSuccessToPath(ParamDownloadRequest downloadRequest){
         //TODO
-        return null;
+        throw new IllegalStateException("not impl!");
     }
 }

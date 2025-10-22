@@ -9,11 +9,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.android.newpos.store.sdk.demo.app.LoadingOption;
 import com.android.newpos.store.sdk.demo.base.BaseViewModel;
+import com.android.newpos.store.sdk.demo.base.DownloadFile;
 import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.ability.ParamAbility;
 import com.newpos.store.android.sdk.dto.AppResponse;
 import com.newpos.store.android.sdk.dto.ParamDownloadRequest;
 import com.newpos.store.android.sdk.dto.ParamDownloadResponse;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -102,7 +104,7 @@ public class ParamViewModel extends BaseViewModel {
                     paramDownloadRequest.setSaveFilePath(getApplication().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
                     paramDownloadRequest.setVersionCode(1);
                     paramDownloadRequest.setSerialNumber(paramAbility.getSerialNumber());
-                    ParamDownloadResponse paramDownloadResponse = paramAbility.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
+                    ParamDownloadResponse paramDownloadResponse = DownloadFile.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
                     paramDownloadResponseMutableLiveData.postValue(paramDownloadResponse);
                     dismissLoading();
                 }, throwable -> {

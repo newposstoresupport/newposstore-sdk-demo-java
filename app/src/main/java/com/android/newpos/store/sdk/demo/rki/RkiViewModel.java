@@ -1,15 +1,10 @@
 package com.android.newpos.store.sdk.demo.rki;
 
-
 import static com.android.newpos.store.sdk.demo.base.AppUtils.showToast;
-
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.android.newpos.store.sdk.demo.app.LoadingOption;
 import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.android.newpos.store.sdk.demo.base.BaseViewModel;
@@ -18,7 +13,6 @@ import com.google.gson.JsonObject;
 import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.base.BaseUtils;
 import com.newpos.store.android.sdk.dto.QueryKdhurlRequest;
-
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -86,6 +80,8 @@ public class RkiViewModel extends BaseViewModel {
                     JsonElement element = jsonObject.get("kdhUrl");
                     String kdhUrl = element.getAsString();
                     Log.d("KdhUrl", "KDH URL: " + kdhUrl);
+
+                    // TODO: Pay attention to these two parameters: clientID and KDHUrl
                     showToast(StoreSdk.getInstance().rkiAbility().downloadCustomerKeys(
                             AppUtils.getClientId(),
                             kdhUrl,
@@ -105,4 +101,6 @@ public class RkiViewModel extends BaseViewModel {
     public String getTitle() {
         return "RKI";
     }
+
+
 }

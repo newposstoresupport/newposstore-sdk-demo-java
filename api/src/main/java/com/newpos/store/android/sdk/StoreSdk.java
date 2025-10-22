@@ -1,10 +1,15 @@
 package com.newpos.store.android.sdk;
 
+import static com.newpos.store.android.sdk.Constant.NEWSTORE_APP_DETAIL;
+import static com.newpos.store.android.sdk.Constant.NEWSTORE_DOWNLOAD_LIST;
+import static com.newpos.store.android.sdk.Constant.NEWSTORE_OTA_UPDATE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.newpos.store.android.sdk.ability.AppAbility;
@@ -257,7 +262,8 @@ public class StoreSdk {
     public void openAppDetail(String packageName){
         Context context = BaseApi.getInstance().getContext();
         Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("market://details?id="+packageName));
+                Uri.parse("market://details?id=" + packageName));
+        intent.setPackage("com.newpos.store.android.app");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -266,14 +272,53 @@ public class StoreSdk {
      * Open the App Market download list
      */
     public void openDownloadList(){
-
+        Context context = BaseApi.getInstance().getContext();
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=com.newpos.store.android.app.download"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
      * Open the OTA update page
      */
     public void openOtaUpdate(){
+        Context context = BaseApi.getInstance().getContext();
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=com.newpos.store.android.app.otaupdate"));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
+    }
+
+    /**
+     * Open NewStore application details page
+     */
+    public void openNewstore(){
+        Context context = BaseApi.getInstance().getContext();
+        Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=com.newpos.store.android.app"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    /**
+     * Open Updatable application details page
+     */
+    public void openUpdatable(){
+        Context context = BaseApi.getInstance().getContext();
+        Intent intent = new Intent(Intent.ACTION_VIEW
+        , Uri.parse("market://details?id=com.newpos.store.android.app.updatable"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     /**

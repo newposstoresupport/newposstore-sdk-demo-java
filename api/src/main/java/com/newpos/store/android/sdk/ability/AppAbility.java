@@ -82,7 +82,7 @@ public class AppAbility extends BaseAbility {
         list.add(app);
 
         List<StoreApp> appFromServer = getAppFromServer(list);
-        if(appFromServer == null){
+        if(appFromServer == null  || appFromServer.isEmpty()){
             return null;
         }
 

@@ -51,10 +51,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.ToDoubleBiFunction;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * @ClassName : BaseApi
@@ -313,34 +309,6 @@ public class BaseApi {
         return null;
     }
 
-    public String downloadFile(String url, String filePath) throws IOException {
-        BaseLog.d("downloadFile: "+url+","+filePath);
-        Request request = new Request.Builder().url(url).build();
-        Response response = client.newCall(request).execute();
-        InputStream inputStream = response.body().byteStream();
-        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-        byte[] buffer = new byte[2048];
-        int len = 0;
-        while ((len = inputStream.read(buffer)) != -1) {
-            fileOutputStream.write(buffer, 0, len);
-        }
-        fileOutputStream.flush();
-
-        return filePath;
-
-//        if(storeClient == null){
-//            BaseLog.e("please init firstly!");
-//            return null;
-//        }
-//
-//        try {
-//            return storeClient.downloadFile(url, filePath);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-    }
-
     public String checkAppUpdate(CheckForUpdateRequest checkForUpdateRequest){
         if(storeClient == null){
             BaseLog.e("please init firstly!");
@@ -392,12 +360,4 @@ public class BaseApi {
 
         return null;
     }
-
-
-    private final OkHttpClient client = new OkHttpClient.Builder()
-            .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .readTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .build();
 }

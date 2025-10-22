@@ -11,6 +11,8 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.android.newpos.store.sdk.demo.databinding.FragmentParamBinding;
 import com.android.newpos.store.sdk.demo.base.BaseFragment;
@@ -30,6 +32,8 @@ import java.util.List;
  * @website : <a href="https://www.newpostech.com/">...</a>
  */
 public class ParamFragment extends BaseFragment<ParamViewModel> {
+
+
     private FragmentParamBinding binding;
     @Override
     public View getRoot(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
@@ -82,6 +86,7 @@ public class ParamFragment extends BaseFragment<ParamViewModel> {
         List<String> strings = new ArrayList<>();
         for (AttachFile file: attachFiles){
             strings.add(file.filePath);
+
         }
         ListView listView = new ListView(requireActivity());
         listView.setAdapter(new ArrayAdapter<>(requireActivity(), android.R.layout.simple_list_item_1, strings));
@@ -89,10 +94,13 @@ public class ParamFragment extends BaseFragment<ParamViewModel> {
             String path = strings.get(position);
             getViewModel().readFile(path);
         });
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         builder.setTitle(requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
         builder.setPositiveButton("ok", (dialog, which) -> dialog.dismiss());
         builder.setView(listView);
         builder.create().show();
     }
+
 }

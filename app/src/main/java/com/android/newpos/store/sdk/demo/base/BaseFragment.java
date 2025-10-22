@@ -1,7 +1,9 @@
 package com.android.newpos.store.sdk.demo.base;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.newpos.store.sdk.demo.MainActivity;
 import com.android.newpos.store.sdk.demo.R;
 import com.android.newpos.store.sdk.demo.app.LoadingDialog;
 import com.android.newpos.store.sdk.demo.app.LoadingDialogManage;
@@ -36,6 +39,7 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        ((MainActivity)getActivity()).updateHeaderVisibility(false);
         viewModel = createViewModel(getClazz());
         View root = getRoot(inflater, container);
         final TextView textView = root.findViewById(R.id.text);
@@ -61,6 +65,7 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ((MainActivity)getActivity()).updateHeaderVisibility(true);
         viewModel.dismissLoading();
         viewModel.getService().shutdownNow();
         viewModel = null;
@@ -81,4 +86,5 @@ public abstract class BaseFragment<T extends BaseViewModel> extends Fragment {
     public T getViewModel(){
         return viewModel;
     }
+
 }

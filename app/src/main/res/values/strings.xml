@@ -15,6 +15,8 @@
     <string name="open_app_detail">Open the Store app page</string>
     <string name="open_download_list">Open the download list</string>
     <string name="open_system_update">Open the system update</string>
+    <string name="open_Newstore">Open the Newstore</string>
+    <string name="open_Updatable">Open the Updatable</string>
 
     <string name="menu_app">App Management</string>
     <string name="menu_app_detail">Application version query, application version download, application update installation, etc.</string>
@@ -91,4 +93,5 @@
     <string name="cancel">Cancel</string>
     <string name="update_success">Update Client ID Success!</string>
     <string name="download">download</string>
+    <string name="file_content_will_be_shown_here">File content will be shown here...</string>
 </resources>

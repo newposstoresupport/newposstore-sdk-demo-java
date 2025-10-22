@@ -21,6 +21,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class AppUtils {
     private static final MMKV mmkv = MMKV.defaultMMKV();
+
     private static final String CLIENT_ID = "clientId";
 
     public static void putClientId(String clientId){

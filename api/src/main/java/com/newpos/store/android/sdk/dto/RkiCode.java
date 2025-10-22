@@ -8,7 +8,6 @@ public enum RkiCode {
     private final int code;
     private final String message;
 
-    // 构造方法必须是 private
     RkiCode(int code, String message) {
         this.code = code;
         this.message = message;

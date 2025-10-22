@@ -61,6 +61,8 @@ public class RkiFragment extends BaseFragment<RkiViewModel> {
     private void appendLog(String message) {
         String old = binding.tvRkiResult.getText().toString();
         binding.tvRkiResult.setText(old + "\n" + message);
-        binding.scrollResult.post(() -> binding.scrollResult.fullScroll(View.FOCUS_DOWN));
+        binding.scrollResult.post(() -> binding.scrollResult.fullScroll(View.FOCUS_DOWN) );
     }
 }
+
+
