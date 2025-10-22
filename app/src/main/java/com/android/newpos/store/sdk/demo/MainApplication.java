@@ -82,7 +82,11 @@ public class MainApplication extends Application {
         INIT_EXECUTOR.execute(() -> {
             try {
                 initDownloader();
-                initStoreSdk(AppUtils.getClientId(), null);
+                initStoreSdk(AppUtils.getClientId(), () -> {
+                    if(StoreSdk.getInstance().rkiAbility() != null){
+                        StoreSdk.getInstance().rkiAbility().bindRkiService();
+                    }
+                });
             } catch (Throwable ignored) {}
         });
 
