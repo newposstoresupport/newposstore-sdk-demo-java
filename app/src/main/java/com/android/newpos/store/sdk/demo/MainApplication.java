@@ -6,6 +6,7 @@ import static com.liulishuo.filedownloader.util.FileDownloadUtils.formatString;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -83,8 +84,10 @@ public class MainApplication extends Application {
             try {
                 initDownloader();
                 initStoreSdk(AppUtils.getClientId(), () -> {
-                    if(StoreSdk.getInstance().rkiAbility() != null){
-                        StoreSdk.getInstance().rkiAbility().bindRkiService();
+                    if(isAppInstalled(getApplicationContext(),"com.newpos.rki")){
+                        if(StoreSdk.getInstance().rkiAbility() != null){
+                            StoreSdk.getInstance().rkiAbility().bindRkiService();
+                        }
                     }
                 });
             } catch (Throwable ignored) {}
@@ -197,5 +200,14 @@ public class MainApplication extends Application {
                         return FileDownloadUtils.md5(formatString("path:%s", path)).hashCode();
                     }
                 });
+    }
+
+    private boolean isAppInstalled(Context context, String packageName) {
+        try {
+            context.getPackageManager().getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }
