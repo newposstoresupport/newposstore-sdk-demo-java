@@ -1,6 +1,7 @@
 package com.android.newpos.store.sdk.demo.app;
 
 import android.app.Application;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class AppViewModel extends BaseViewModel {
 
-    private String FILE_SAVEPATH = "/mnt/sdcard";
+    private String FILE_SAVEPATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
 
     public AppViewModel(@NonNull Application application) {
         super(application);
