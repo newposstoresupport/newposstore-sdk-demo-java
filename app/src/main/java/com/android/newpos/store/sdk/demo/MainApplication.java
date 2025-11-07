@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ import com.newpos.store.android.sdk.base.SPreference;
 import com.newpos.store.android.sdk.dto.AppElements;
 import com.newpos.store.android.sdk.dto.AuthenticationRequest;
 import com.newpos.store.android.sdk.listener.IStoreCallback;
+import com.pos.device.SDKManager;
+import com.pos.device.sys.SystemManager;
 import com.tencent.mmkv.MMKV;
 
 import java.util.Objects;
@@ -85,12 +88,25 @@ public class MainApplication extends Application {
                 initDownloader();
                 initStoreSdk(AppUtils.getClientId(), () -> {
                     if(isAppInstalled(getApplicationContext(),"com.newpos.rki")){
-                        if(StoreSdk.getInstance().rkiAbility() != null){
-                            StoreSdk.getInstance().rkiAbility().bindRkiService();
+                        try {
+                            if(StoreSdk.getInstance().rkiAbility() != null){
+                                StoreSdk.getInstance().rkiAbility().bindRkiService();
+                            }
+                        } catch (IllegalStateException e) {
+                            e.printStackTrace();
                         }
                     }
                 });
             } catch (Throwable ignored) {}
+        });
+
+        SDKManager.init(this,()->{
+            Log.d("MainApplication","sdk init success");
+            SystemManager.grantRuntimePermission(new String[]{
+                    "android.permission.READ_EXTERNAL_STORAGE",
+                    "android.permission.MANAGE_EXTERNAL_STORAGE",
+                    "android.permission.WRITE_MEDIA_STORAGE"
+            });
         });
 
     }

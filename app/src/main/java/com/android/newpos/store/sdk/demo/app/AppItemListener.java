@@ -13,4 +13,5 @@ import com.newpos.store.android.sdk.dto.StoreApp;
  */
 public interface AppItemListener {
     void onClick(StoreApp storeApp);
+    void onInstallBtnClick(AppDownloadStatus status);
 }
