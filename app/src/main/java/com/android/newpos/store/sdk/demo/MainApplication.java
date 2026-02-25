@@ -34,8 +34,6 @@ import com.newpos.store.android.sdk.base.SPreference;
 import com.newpos.store.android.sdk.dto.AppElements;
 import com.newpos.store.android.sdk.dto.AuthenticationRequest;
 import com.newpos.store.android.sdk.listener.IStoreCallback;
-import com.pos.device.SDKManager;
-import com.pos.device.sys.SystemManager;
 import com.tencent.mmkv.MMKV;
 
 import java.util.Objects;
@@ -59,9 +57,10 @@ import io.reactivex.schedulers.Schedulers;
 public class MainApplication extends Application {
     //TODO step 1
     // make sure to replace with your own appid & appkey & appsecret
-    private static final String AppId = "32292cc7e05a2b86ddea1d6746210283";
-    private static final String AppKey = "c3ff54daf66bbbd2e8d8dbf08172a5aa";
-    private static final String AppSecret = "a8e2188e9474692ea6a538f0a4f955ab";
+
+    private static final String AppId = "270203b4858e70879a69fedaba23da6c";
+    private static final String AppKey = "03c8baefeaa40423ad07398feac430ef";
+    private static final String AppSecret = "4d8f2af32eaa0112c2bdec4ce1ec33f9";
     private static final ExecutorService INIT_EXECUTOR = Executors.newSingleThreadExecutor();
 
     private static final LoadingDialogManage ld = null;
@@ -100,14 +99,15 @@ public class MainApplication extends Application {
             } catch (Throwable ignored) {}
         });
 
-        SDKManager.init(this,()->{
+        //TODO:for some reasons,this part of source code need to be comment,you can contact newpos for more infomation
+        /*SDKManager.init(this,()->{
             Log.d("MainApplication","sdk init success");
             SystemManager.grantRuntimePermission(new String[]{
                     "android.permission.READ_EXTERNAL_STORAGE",
                     "android.permission.MANAGE_EXTERNAL_STORAGE",
                     "android.permission.WRITE_MEDIA_STORAGE"
             });
-        });
+        });*/
 
     }
 

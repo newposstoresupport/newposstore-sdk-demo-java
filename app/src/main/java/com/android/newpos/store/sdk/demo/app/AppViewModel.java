@@ -19,7 +19,6 @@ import com.liulishuo.filedownloader.util.FileDownloadUtils;
 import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.base.BaseException;
 import com.newpos.store.android.sdk.dto.StoreApp;
-import com.pos.device.sys.SystemManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -243,7 +242,9 @@ public class AppViewModel extends BaseViewModel {
    }
 
    public void installApk(AppDownloadStatus app){
-        if(app == null || app.downloadStatus != DownloadStatus.DOWNLOADED){
+       AppUtils.showToast(R.string.not_support);
+        //TODO:  due to some resons ,this part of source code need to be comment
+        /*if(app == null || app.downloadStatus != DownloadStatus.DOWNLOADED){
             AppUtils.showToast(R.string.downloadtask_not_finish);
             return;
         }
@@ -257,6 +258,6 @@ public class AppViewModel extends BaseViewModel {
             AppUtils.showToast(R.string.install_success);
         }else{
             AppUtils.showToast("install fail,code:" + result);
-        }
+        }*/
    }
 }
