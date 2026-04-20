@@ -15,5 +15,8 @@ public interface UrlConstant {
     String LBS_CELL_QUERY = "lbs.cell.query";
     String LBS_WIFI_QUERY = "lbs.wifi.query";
     String QUERY_KDH_URL = "rki.configQuery";
+    String PARAM_TASK_QUERY = "store.paramTaskQuery";
+    String PARAM_DOWN_QUERY = "store.paramDownQuery";
+    String PARAM_DOWN_VERIFY = "store.paramDownVerify";
 
 }

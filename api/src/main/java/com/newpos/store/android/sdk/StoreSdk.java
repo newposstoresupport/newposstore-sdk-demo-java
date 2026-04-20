@@ -18,6 +18,7 @@ import com.newpos.store.android.sdk.ability.GoInsightAbility;
 import com.newpos.store.android.sdk.ability.LbsAbility;
 import com.newpos.store.android.sdk.ability.OtaAbility;
 import com.newpos.store.android.sdk.ability.ParamAbility;
+import com.newpos.store.android.sdk.ability.ParamAbilityV2;
 import com.newpos.store.android.sdk.ability.RkiAbility;
 import com.newpos.store.android.sdk.ability.UpgradeAbility;
 import com.newpos.store.android.sdk.base.BaseApi;
@@ -55,6 +56,7 @@ public class StoreSdk {
     private GoInsightAbility goInsightAbility;
     private LbsAbility lbsAbility;
     private ParamAbility paramAbility;
+    private ParamAbilityV2 paramAbilityV2;
     private UpgradeAbility upgradeAbility;
     private OtaAbility otaAbility;
     private RkiAbility rkiAbility;
@@ -205,6 +207,20 @@ public class StoreSdk {
     }
 
     /**
+     * Parameters Management Capability Center
+     * @return {@link ParamAbility}
+     */
+    public ParamAbilityV2 paramAbilityV2(){
+        if (paramAbilityV2 == null) {
+            acquireSemaphore();
+            if (paramAbilityV2 == null) {
+                throw new IllegalStateException("Not initialized");
+            }
+        }
+        return paramAbilityV2;
+    }
+
+    /**
      * Upgrade Capability Center
      * @return {@link UpgradeAbility}
      */
@@ -338,6 +354,7 @@ public class StoreSdk {
         }
         if(map.containsKey(EAbility.Param_Download)){
             paramAbility = new ParamAbility(ai.getBaseUrl(), appElements, ai.getSerialNo(), map.get(EAbility.Param_Download));
+            paramAbilityV2 = new ParamAbilityV2(ai.getBaseUrl(), appElements, ai.getSerialNo(), map.get(EAbility.Param_Download));
         }
         if(map.containsKey(EAbility.Upgrade_)){
             upgradeAbility = new UpgradeAbility(ai.getBaseUrl(), appElements, ai.getSerialNo(), map.get(EAbility.Upgrade_));

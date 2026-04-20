@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.android.newpos.store.sdk.demo.CloudMessageReceiver;
 import com.android.newpos.store.sdk.demo.R;
 import com.android.newpos.store.sdk.demo.databinding.FragmentCloudBinding;
 import com.android.newpos.store.sdk.demo.base.BaseFragment;

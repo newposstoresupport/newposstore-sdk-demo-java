@@ -53,7 +53,4 @@ public class LbsFragment extends BaseFragment<LbsViewModel> {
         binding.tvLbsResult.setText((old + "\n" + text).trim());
         binding.scrollResult.post(() -> binding.scrollResult.fullScroll(View.FOCUS_DOWN));
     }
-
-
-
 }

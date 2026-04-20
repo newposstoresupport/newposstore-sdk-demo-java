@@ -1,20 +1,19 @@
 package com.android.newpos.store.sdk.demo;
 
+import static com.android.newpos.store.sdk.demo.base.DownloadWorker.KEY_MESSAGE_ID;
+
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Rect;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.android.newpos.store.sdk.demo.param.ParamFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.window.layout.WindowMetrics;
-import androidx.window.layout.WindowMetricsCalculator;
 
 import com.android.newpos.store.sdk.demo.databinding.ActivityMainBinding;
 import com.liulishuo.filedownloader.util.FileDownloadUtils;
@@ -56,6 +55,18 @@ public class MainActivity extends AppCompatActivity {
 
         updateHeaderVisibility(true);
         FileDownloadUtils.setDefaultSaveRootPath(getFilesDir().getAbsolutePath());
+
+        Intent intent = getIntent();
+        if(intent != null){
+            String msgId = intent.getStringExtra(KEY_MESSAGE_ID);
+            if(!TextUtils.isEmpty(msgId)){
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, ParamFragment.newInstance(msgId))
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
     }
 
     public boolean isPhysical480x480Device(Context context) {

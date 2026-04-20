@@ -41,6 +41,8 @@ public class AuthenticationInfo implements Parcelable {
 
     private String registerId;
 
+    private String[] apiCerts;
+
     public AuthenticationInfo() {
     }
 
@@ -63,6 +65,7 @@ public class AuthenticationInfo implements Parcelable {
         androidId = in.readString();
         statusCode = in.readString();
         registerId = in.readString();
+        apiCerts = in.createStringArray();
     }
 
     @Override
@@ -85,6 +88,7 @@ public class AuthenticationInfo implements Parcelable {
         dest.writeString(androidId);
         dest.writeString(statusCode);
         dest.writeString(registerId);
+        dest.writeStringArray(apiCerts);
     }
 
     @Override
@@ -230,6 +234,14 @@ public class AuthenticationInfo implements Parcelable {
 
     public void setRegisterId(String registerId) {
         this.registerId = registerId;
+    }
+
+    public String[] getApiCerts() {
+        return apiCerts;
+    }
+
+    public void setApiCerts(String[] apiCerts) {
+        this.apiCerts = apiCerts;
     }
 
     @NonNull

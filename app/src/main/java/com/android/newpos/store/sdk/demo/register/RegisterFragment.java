@@ -59,7 +59,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
             editText.setHint(R.string.client_id_hint);
             editText.setText(AppUtils.getClientId());
             editText.setFilters(new android.text.InputFilter[]{
-                    new android.text.InputFilter.LengthFilter(30)
+                    new android.text.InputFilter.LengthFilter(50)
             });
             editText.setInputType(InputType.TYPE_CLASS_TEXT);
             //editText.setKeyListener(DigitsKeyListener.getInstance("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
@@ -82,5 +82,18 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel> {
                     })
                     .create().show();
         });
+        binding.clearClient.setOnClickListener(v -> new AlertDialog.Builder(requireActivity())
+                .setTitle(R.string.app_name)
+                .setMessage(R.string.confirm_clear_client_id)
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    AppUtils.putClientId("");
+                    Toast.makeText(requireActivity(), R.string.update_success, Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    clientIdView.setText(AppUtils.getClientId());
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create().show());
     }
 }

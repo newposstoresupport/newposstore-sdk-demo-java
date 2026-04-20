@@ -1,32 +1,37 @@
-package com.android.newpos.store.sdk.demo.cloud;
+package com.android.newpos.store.sdk.demo;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.android.newpos.store.sdk.demo.base.AppUtils.showToast;
+import static com.android.newpos.store.sdk.demo.base.DownloadWorker.KEY_MESSAGE_ID;
+import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_DOWN_PARAM;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_NOTIFICATION;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS;
 import static com.newpos.store.android.sdk.Constant.CM_DATA;
 import static com.newpos.store.android.sdk.Constant.CM_MSGID;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.android.newpos.store.sdk.demo.R;
 import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.newpos.store.android.sdk.Constant;
 import com.newpos.store.android.sdk.StoreSdk;
@@ -43,6 +48,8 @@ import org.json.JSONObject;
  * @Version : 1.0
  * @Description :
  * @website : <a href="https://www.newpostech.com/">...</a>
+ *
+ * am broadcast -a com.newstore.action.CLOUD_MESSAGE_ARRIVED -n com.android.newpos.store.sdk.demo/.CloudMessageReceiver
  */
 public class CloudMessageReceiver extends BroadcastReceiver {
     private static final String TAG = CloudMessageReceiver.class.getSimpleName();
@@ -77,7 +84,19 @@ public class CloudMessageReceiver extends BroadcastReceiver {
                 String content = jsonObject.getString("detail");
                 boolean sound = bundle.getBoolean(Constant.CM_SOUND);
                 boolean bubble = bundle.getBoolean(Constant.CM_BADGE);
-                sendNotification(context, title, content, sound, bubble);
+                sendNotificationMessage(context, title, content, sound, bubble);
+            }
+            if(CLOUD_MESSAGE_TYPE_DOWN_PARAM.equals(cmd)){
+                String msgId = bundle.getString(CM_MSGID);
+                //TODO You can choose to download in the foreground or in the background.
+
+                //直接后台下载任务demo
+                //Download the task demo directly in the background
+                //AppUtils.startDownloadWorker(context, msgId);
+
+                //启动前台下载任务demo
+                //Launch the foreground download task demo
+                sendNotificationParamDownload(context, msgId);
             }
             if(CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS.equals(cmd)){
                 String messageId = bundle.getString(CM_MSGID);
@@ -96,7 +115,7 @@ public class CloudMessageReceiver extends BroadcastReceiver {
         }
     }
 
-    public void sendNotification(Context context, String title, String content, boolean sound, boolean bubble){
+    public void sendNotificationMessage(Context context, String title, String content, boolean sound, boolean bubble){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel(context, CM_CHANNEL_ID, CM_CHANNEL_NAME, sound, bubble);
         }
@@ -109,6 +128,39 @@ public class CloudMessageReceiver extends BroadcastReceiver {
             //large = R.mipmap.ic_launcher;
         }
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), large));
+        int notifyId = (int) System.currentTimeMillis();
+        getNotificationManager(context).notify(notifyId, builder.build());
+    }
+
+    private void sendNotificationParamDownload(Context context, String msg){
+        String channel_id = "Cloud Download Parameters";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel(context, channel_id, "download param", true, true);
+        }
+
+        NotificationCompat.Builder builder = createBuilder(context,
+                "parameter download notification",
+                "Click the notification to download automatically with one click",
+                channel_id, false);
+        builder.setSmallIcon(R.mipmap.demo);
+
+        int large = R.mipmap.demo;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            //TODO You need to be compatible with the notification bar icon
+            //large = R.mipmap.ic_launcher;
+        }
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), large));
+
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(KEY_MESSAGE_ID, msg);
+        PendingIntent pi = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+        builder.setContentIntent(pi);
+
         int notifyId = (int) System.currentTimeMillis();
         getNotificationManager(context).notify(notifyId, builder.build());
     }

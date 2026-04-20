@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
+
 import com.newpos.store.android.sdk.base.BaseAbility;
 import com.newpos.store.android.sdk.base.BaseApi;
 import com.newpos.store.android.sdk.base.BaseException;
@@ -20,6 +21,7 @@ import com.newpos.store.android.sdk.dto.CheckForUpdateResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 /**
  * @ClassName : AppAbility

@@ -55,9 +55,9 @@ import io.reactivex.schedulers.Schedulers;
 public class MainApplication extends Application {
     //TODO step 1
     // make sure to replace with your own appid & appkey & appsecret
-    private static final String AppId = "32292cc7e05a2b86ddea1d6746210283";
-    private static final String AppKey = "c3ff54daf66bbbd2e8d8dbf08172a5aa";
-    private static final String AppSecret = "a8e2188e9474692ea6a538f0a4f955ab";
+    private static final String AppId = BuildConfig.APPID;//"32292cc7e05a2b86ddea1d6746210283";
+    private static final String AppKey = BuildConfig.APPKEY;//"c3ff54daf66bbbd2e8d8dbf08172a5aa";
+    private static final String AppSecret = BuildConfig.APPSECRET;//"a8e2188e9474692ea6a538f0a4f955ab";
     private static final ExecutorService INIT_EXECUTOR = Executors.newSingleThreadExecutor();
 
     private static final LoadingDialogManage ld = null;
@@ -82,11 +82,7 @@ public class MainApplication extends Application {
         INIT_EXECUTOR.execute(() -> {
             try {
                 initDownloader();
-                initStoreSdk(AppUtils.getClientId(), () -> {
-                    if(StoreSdk.getInstance().rkiAbility() != null){
-                        StoreSdk.getInstance().rkiAbility().bindRkiService();
-                    }
-                });
+                initStoreSdk(AppUtils.getClientId(), null);
             } catch (Throwable ignored) {}
         });
 

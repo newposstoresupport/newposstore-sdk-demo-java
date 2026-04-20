@@ -40,6 +40,10 @@ public class AttachFile {
      * 文件路径
      */
     public String filePath;
+    /**
+     * zip文件夹
+     */
+    public String fileDir;
 
     @NonNull
     @Override
@@ -52,6 +56,7 @@ public class AttachFile {
                 ", fileSize=" + fileSize +
                 ", id=" + id +
                 ", filePath='" + filePath + '\'' +
+                ", fileDir='" + fileDir + '\'' +
                 '}';
     }
 }

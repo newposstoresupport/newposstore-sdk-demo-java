@@ -30,7 +30,7 @@ public class LoadingDialogManage {
         }
 
         dialog = new LoadingDialog(context);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);
 
         AppCompatTextView label = dialog.findViewById(R.id.tv);

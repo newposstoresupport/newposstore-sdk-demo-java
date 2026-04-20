@@ -51,4 +51,8 @@ public interface Constant {
      * RKI download ca certificate
      */
     String CLOUD_MESSAGE_TYPE_RKI_DOWN_CA = "A0FB";
+    /**
+     * Parameter download for third-party app
+     */
+    String CLOUD_MESSAGE_TYPE_DOWN_PARAM = "A006";
 }

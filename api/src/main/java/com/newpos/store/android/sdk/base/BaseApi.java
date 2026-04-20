@@ -1,10 +1,12 @@
 package com.newpos.store.android.sdk.base;
 
-import static com.newpos.store.android.sdk.Constant.API_SUCCESS;
 import static com.newpos.store.android.sdk.Constant.ERROR_MARKET_AUTHENTICATION;
 import static com.newpos.store.android.sdk.Constant.ERROR_MARKET_NOT_INSTALLED;
 import static com.newpos.store.android.sdk.base.UrlConstant.LBS_CELL_QUERY;
 import static com.newpos.store.android.sdk.base.UrlConstant.LBS_WIFI_QUERY;
+import static com.newpos.store.android.sdk.base.UrlConstant.PARAM_DOWN_QUERY;
+import static com.newpos.store.android.sdk.base.UrlConstant.PARAM_DOWN_VERIFY;
+import static com.newpos.store.android.sdk.base.UrlConstant.PARAM_TASK_QUERY;
 import static com.newpos.store.android.sdk.base.UrlConstant.QUERY_APP_CONFIG;
 import static com.newpos.store.android.sdk.base.UrlConstant.QUERY_APP_UPDATE;
 import static com.newpos.store.android.sdk.base.UrlConstant.QUERY_KDH_URL;
@@ -18,7 +20,6 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.ParcelUuid;
 import android.os.RemoteException;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -34,22 +35,17 @@ import com.newpos.store.android.sdk.dto.AuthenticationInfo;
 import com.newpos.store.android.sdk.dto.AuthenticationRequest;
 import com.newpos.store.android.sdk.dto.CheckForUpdateRequest;
 import com.newpos.store.android.sdk.dto.LbsLocationRequest;
-import com.newpos.store.android.sdk.dto.LbsLocationResponse;
+import com.newpos.store.android.sdk.dto.ParamDownQueryRequestV2;
+import com.newpos.store.android.sdk.dto.ParamTask;
+import com.newpos.store.android.sdk.dto.ParamVerify;
+import com.newpos.store.android.sdk.dto.ParamVerifyRequestV2;
 import com.newpos.store.android.sdk.dto.PatchType;
 import com.newpos.store.android.sdk.dto.QueryKdhurlRequest;
 import com.newpos.store.android.sdk.dto.QueryRequest;
-import com.newpos.store.android.sdk.dto.QueryResponse;
 import com.newpos.store.android.sdk.listener.IApiCallback;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.function.ToDoubleBiFunction;
 
 
 /**
@@ -161,6 +157,21 @@ public class BaseApi {
             }
             BaseLog.d("ai:" + ai);
 
+            //for demo start
+            String[] apiPaths = ai.getApiPaths();
+            for (String path: apiPaths){
+                BaseLog.d("path:"+path);
+            }
+
+            String[] apiCerts = ai.getApiCerts();
+            int index = 0;
+            for (String cert: apiCerts){
+                BaseLog.d("cert:"+cert);
+                BaseUtils.saveToFile(mContext, "cert"+index, cert);
+                index ++;
+            }
+            //for demo end
+
             if (ai == null) {
                 BaseLog.e(ERROR_MARKET_AUTHENTICATION);
                 callback.initFailed(new RemoteException(ERROR_MARKET_AUTHENTICATION));
@@ -241,6 +252,21 @@ public class BaseApi {
         }
     }
 
+    public byte[] doEncryptionDecryption(byte[] srcData, int mode){
+        if(storeClient == null){
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+
+        try {
+            return storeClient.doEncryptionDecryption(srcData, mode);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public String queryAppAppendix(PatchType patchType){
         if(storeClient == null){
             BaseLog.e("please init firstly!");
@@ -268,20 +294,16 @@ public class BaseApi {
         queryRequest.applications = BaseUtils.buildJsonArray(appQueries);
         String request = BaseUtils.toJson(queryRequest);
         BaseLog.d("request:"+request);
-        try {
-            String response = "";
-            if(BaseUtils.is0116NewStore(mContext)){
-                response = storeClient.queryAppConfig(request);
-
-            }else {
-                response = storeClient.dynamicRequest(QUERY_APP_CONFIG, null, request);
+        if(BaseUtils.is0116NewStore(mContext)){
+            try {
+                return storeClient.queryAppConfig(request);
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-            BaseLog.d("response:"+response);
-            return response;
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            return null;
         }
-        return null;
+
+        return requestWithCheck(QUERY_APP_CONFIG, request);
     }
 
     public String requestLocation(LbsLocationRequest locationRequest, boolean wifi) {
@@ -290,23 +312,10 @@ public class BaseApi {
             return null;
         }
 
-        if(BaseUtils.is0116NewStore(mContext)){
-            Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
-            BaseLog.w("requestLocation >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
-            return null;
-        }
-
         String request = BaseUtils.toJson(locationRequest);
         BaseLog.d("request:"+request);
-        try {
-            String response = storeClient.dynamicRequest(wifi ? LBS_WIFI_QUERY:LBS_CELL_QUERY, null, request);
-            BaseLog.d("response:"+response);
-            return response;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
 
-        return null;
+        return requestWithCheck(wifi ? LBS_WIFI_QUERY:LBS_CELL_QUERY, request);
     }
 
     public String checkAppUpdate(CheckForUpdateRequest checkForUpdateRequest){
@@ -318,21 +327,7 @@ public class BaseApi {
         String request = BaseUtils.toJson(checkForUpdateRequest);
         BaseLog.d("request:"+request);
 
-        if(BaseUtils.is0116NewStore(mContext)){
-            Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
-            BaseLog.w("requestLocation >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
-            return null;
-        }
-
-        try {
-            String response = storeClient.dynamicRequest(QUERY_APP_UPDATE, null, request);
-            BaseLog.d("response:"+response);
-            return response;
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return requestWithCheck(QUERY_APP_UPDATE, request);
     }
 
     public String queryKdhurl(QueryKdhurlRequest queryKdhurlRequest){
@@ -343,6 +338,59 @@ public class BaseApi {
         String request = BaseUtils.toJson(queryKdhurlRequest);
         BaseLog.d("request:"+request);
 
+        return requestWithCheck(QUERY_KDH_URL, request);
+    }
+
+    public String paramTaskQuery(){
+        if(storeClient == null){
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+
+        QueryRequest queryRequest = new QueryRequest();
+
+        List<AppQuery> appQueries = new ArrayList<>();
+        AppQuery appQuery = new AppQuery();
+        appQuery.packageName = mContext.getPackageName();
+        try {
+            PackageInfo packageInfo = mContext.getPackageManager().getPackageInfo(appQuery.packageName, 0);
+            appQuery.verCode = packageInfo.versionCode;
+            appQuery.verName = packageInfo.versionName;
+            appQuery.attachFiles = null;
+        } catch (PackageManager.NameNotFoundException ignore) {}
+        appQueries.add(appQuery);
+        queryRequest.applications = BaseUtils.buildJsonArray(appQueries);
+        String request = BaseUtils.toJson(queryRequest);
+        BaseLog.d("request:"+request);
+
+        return requestWithCheck(PARAM_TASK_QUERY, request);
+    }
+
+    public String paramDownQuery(ParamTask task){
+        if(storeClient == null){
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+
+        String request = BaseUtils.toJson(new ParamDownQueryRequestV2(task));
+        BaseLog.d("request:"+request);
+
+        return requestWithCheck(PARAM_DOWN_QUERY, request);
+    }
+
+    public String paramDownVerify(ParamVerify paramVerify){
+        if(storeClient == null){
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+
+        String request = BaseUtils.toJson(new ParamVerifyRequestV2(paramVerify));
+        BaseLog.d("request:"+request);
+
+        return requestWithCheck(PARAM_DOWN_VERIFY, request);
+    }
+
+    private String requestWithCheck(String url, String request){
         if(BaseUtils.is0116NewStore(mContext)){
             Toast.makeText(mContext, "NewStore version is too low, please upgrade NEWSTORE CLIENT!", Toast.LENGTH_LONG).show();
             BaseLog.w("requestLocation >>> NewStore Core version is too low, please upgrade NEWSTORE CLIENT!");
@@ -350,8 +398,7 @@ public class BaseApi {
         }
 
         try {
-
-            String response = storeClient.dynamicRequest(QUERY_KDH_URL, null, request);
+            String response = storeClient.dynamicRequest(url, null, request);
             BaseLog.d("response:"+response);
             return  response;
         }catch (RemoteException e){

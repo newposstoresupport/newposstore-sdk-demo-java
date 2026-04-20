@@ -1,9 +1,6 @@
 package com.android.newpos.store.sdk.demo.base;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.newpos.store.sdk.demo.MainActivity;
 import com.android.newpos.store.sdk.demo.R;
-import com.android.newpos.store.sdk.demo.app.LoadingDialog;
 import com.android.newpos.store.sdk.demo.app.LoadingDialogManage;
 
 /**

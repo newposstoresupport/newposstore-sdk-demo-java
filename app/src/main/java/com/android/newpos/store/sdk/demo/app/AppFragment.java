@@ -45,7 +45,6 @@ public class AppFragment extends BaseFragment<AppViewModel> {
         super.onViewCreated(view, savedInstanceState);
 
         binding.getApps.setOnClickListener(v -> getViewModel().getAppsByPackageName());
-
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         AppAdapter appAdapter = new AppAdapter(R.layout.item_app, new ArrayList<>());
@@ -54,4 +53,6 @@ public class AppFragment extends BaseFragment<AppViewModel> {
         recyclerView.setAdapter(appAdapter);
         getViewModel().getAppList().observe(getViewLifecycleOwner(), appAdapter::setNewData);
     }
+
+
 }

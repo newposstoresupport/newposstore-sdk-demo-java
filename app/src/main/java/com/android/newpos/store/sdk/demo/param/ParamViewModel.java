@@ -7,14 +7,20 @@ import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.newpos.store.sdk.demo.BuildConfig;
 import com.android.newpos.store.sdk.demo.app.LoadingOption;
+import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.android.newpos.store.sdk.demo.base.BaseViewModel;
-import com.android.newpos.store.sdk.demo.base.DownloadFile;
+import com.android.newpos.store.sdk.demo.base.DownloadFileManager;
 import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.ability.ParamAbility;
+import com.newpos.store.android.sdk.ability.ParamAbilityV2;
 import com.newpos.store.android.sdk.dto.AppResponse;
+import com.newpos.store.android.sdk.dto.ParamDownQueryV2Data;
+import com.newpos.store.android.sdk.dto.ParamDownV2Result;
 import com.newpos.store.android.sdk.dto.ParamDownloadRequest;
 import com.newpos.store.android.sdk.dto.ParamDownloadResponse;
+import com.newpos.store.android.sdk.dto.ParamTask;
 
 
 import java.io.IOException;
@@ -38,12 +44,14 @@ public class ParamViewModel extends BaseViewModel {
 
     private final MutableLiveData<String> mInfo;
     private final MutableLiveData<ParamDownloadResponse> paramDownloadResponseMutableLiveData;
+    private final MutableLiveData<List<ParamDownV2Result>> v2ResultLiveData;
     private final MutableLiveData<String> showFileContent = new MutableLiveData<>();
 
     public ParamViewModel(@NonNull Application application) {
         super(application);
         this.mInfo = new MutableLiveData<>();
         this.paramDownloadResponseMutableLiveData = new MutableLiveData<>();
+        this.v2ResultLiveData = new MutableLiveData<>();
     }
 
     @Override
@@ -59,11 +67,16 @@ public class ParamViewModel extends BaseViewModel {
         return paramDownloadResponseMutableLiveData;
     }
 
+    public MutableLiveData<List<ParamDownV2Result>> getV2ResultLiveData(){
+        return v2ResultLiveData;
+    }
+
     public MutableLiveData<String> getShowFileContent() {
         return showFileContent;
     }
 
     private List<AppResponse> appResponseList = null;
+    private List<ParamTask> paramTaskList = null;
 
     public void queryParamFile(){
         showLoading(new LoadingOption("Querying parameter list..."));
@@ -102,9 +115,14 @@ public class ParamViewModel extends BaseViewModel {
                     ParamDownloadRequest paramDownloadRequest = new ParamDownloadRequest();
                     paramDownloadRequest.setPackageName(getApplication().getPackageName());
                     paramDownloadRequest.setSaveFilePath(getApplication().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
-                    paramDownloadRequest.setVersionCode(1);
+                    paramDownloadRequest.setVersionCode(BuildConfig.VERSION_CODE);
                     paramDownloadRequest.setSerialNumber(paramAbility.getSerialNumber());
-                    ParamDownloadResponse paramDownloadResponse = DownloadFile.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
+                    ParamDownloadResponse paramDownloadResponse = DownloadFileManager.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
+                    if(paramDownloadResponse == null){
+                        mInfo.postValue("Download parameter file failed, please check!");
+                        dismissLoading();
+                        return;
+                    }
                     paramDownloadResponseMutableLiveData.postValue(paramDownloadResponse);
                     dismissLoading();
                 }, throwable -> {
@@ -128,6 +146,8 @@ public class ParamViewModel extends BaseViewModel {
                         } catch (IOException e) {
                             showError(e);
                         }
+                    }else {
+                        //TODO 存在bug
                     }
                     dismissLoading();
                 }, throwable -> {
@@ -135,5 +155,70 @@ public class ParamViewModel extends BaseViewModel {
                     showError(throwable);
                 })
         );
+    }
+
+    public void queryParamFileV2(){
+        showLoading(new LoadingOption("Querying parameter(v2)..."));
+        addSubscribe(Observable.just(true)
+                .observeOn(Schedulers.io())
+                .subscribe(n -> {
+                    paramTaskList = StoreSdk.getInstance().paramAbilityV2().queryParamTask();
+                    if(paramTaskList.isEmpty()){
+                        mInfo.postValue("There is no parameter file under the application. Please go to the cloud platform to config it.");
+                    }else {
+                        StringBuilder builder = new StringBuilder();
+                        for (ParamTask task : paramTaskList){
+                            builder.append(task.toString()).append("\n");
+                        }
+                        mInfo.postValue(builder.toString());
+                    }
+                    dismissLoading();
+                }, throwable -> {
+                    dismissLoading();
+                    showError(throwable);
+                })
+        );
+    }
+
+    public void downloadParamFileV2(){
+        showLoading(new LoadingOption("Downloading parameter file(V2)..."));
+        addSubscribe(Observable.just(true)
+                .observeOn(Schedulers.io())
+                .subscribe(n -> {
+                    if(paramTaskList == null || paramTaskList.isEmpty()){
+                        mInfo.postValue("There is no parameter list, please query first!");
+                        dismissLoading();
+                        return;
+                    }
+                    ParamAbilityV2 v2 = StoreSdk.getInstance().paramAbilityV2();
+                    List<ParamDownQueryV2Data> v2Data = v2.queryParamDown(paramTaskList.get(0));
+                    if(v2Data == null || v2Data.isEmpty()){
+                        mInfo.postValue("Download parameter file failed, please check!");
+                        dismissLoading();
+                        return;
+                    }
+                    List<ParamDownV2Result> v2ResultList = DownloadFileManager
+                            .downloadParamToPathV2(getApplication(), v2Data);
+                    if(v2ResultList.isEmpty()){
+                        mInfo.postValue("Download parameter file failed, please check!");
+                        dismissLoading();
+                        return;
+                    }
+                    v2ResultLiveData.postValue(v2ResultList);
+                    dismissLoading();
+                }, throwable -> {
+                    dismissLoading();
+                    showError(throwable);
+                })
+        );
+    }
+
+    public void downloadOneKey(String msg){
+        showLoading(new LoadingOption("Query and Download param...."));
+        AppUtils.startDownloadWorker(getApplication(), msg);
+    }
+
+    public void dismiss(){
+        dismissLoading();
     }
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">NEWPOSSTORE SDK Demo</string>
+    <string name="run_tip">NEWPOSSTORE SDK Demo is running</string>
 
     <string name="sdk_version">STORE SDK Version: %s</string>
 
@@ -31,6 +32,8 @@
     <string name="menu_register_detail">The application information is registered to the platform server to obtain the corresponding enabled capabilities</string>
     <string name="hand_register">Manual Registration</string>
     <string name="hand_client_id">Enter Client ID</string>
+    <string name="clear_client_id">Clear Client ID</string>
+    <string name="confirm_clear_client_id">Confirm to Clear Client ID?</string>
     <string name="client_id_hint">Please Enter Client ID:</string>
     <string name="register_rki_detail">When your application has enabled RKI, you need to apply for ClientId to register with the backend to fully use the RKI capabilities.</string>
 
@@ -47,7 +50,10 @@
     <string name="menu_param">Parameters Download</string>
     <string name="menu_param_detail">Third-party applications download the parameters configured on the cloud platform through Core</string>
     <string name="query_app_parameters">Query app parameters</string>
+    <string name="query_app_parameters_v2">(V2)Query app parameters</string>
     <string name="download_app_parameters_file">download app parameters file</string>
+    <string name="download_app_parameters_file_v2">(V2)download app parameters file</string>
+    <string name="download_app_param_onekey_v2">(V2)One-click download</string>
 
 
     <string name="menu_cloud">Cloud Message</string>

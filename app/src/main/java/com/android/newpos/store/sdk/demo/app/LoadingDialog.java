@@ -33,8 +33,4 @@ public class LoadingDialog extends Dialog {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        // 不可取消
-    }
 }

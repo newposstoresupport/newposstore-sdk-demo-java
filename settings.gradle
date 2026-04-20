@@ -15,5 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "NEWPOSSTORE SDK DEMO"
 include ':app'
-//include ':api'
-//include ':aidl'
+include ':api'
+include ':aidl'

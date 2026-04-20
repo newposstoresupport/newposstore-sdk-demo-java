@@ -131,4 +131,22 @@ interface IStoreClient {
     *
     */
     String downloadFile(String fileUrl, String filePath);
+
+    /*
+    * Chinese NEWSTORE平台加解密流程
+    * English NEWSTORE Platform Encryption/Decryption Process
+    *
+    * @params srcData Chinese 元数据
+    *                 English Source Data
+    *
+    * @params mode Chinese 模式
+    *              English Mode
+    *              0---加密/Encryption
+    *              1---解密/Decryption
+    *
+    * @return String Chinese 计算结果
+    *                English Calculation results
+    *
+    */
+    byte[] doEncryptionDecryption(in byte[] srcData, int mode);
 }
