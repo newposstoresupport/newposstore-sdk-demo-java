@@ -61,11 +61,5 @@ public class AppAdapter extends BaseQuickAdapter<AppDownloadStatus, BaseViewHold
                 appItemListener.onClick(storeApp);
             }
         });
-
-        baseViewHolder.getView(R.id.btn_install).setOnClickListener(v -> {
-            if(appItemListener != null){
-                appItemListener.onInstallBtnClick(appDownloadStatus);
-            }
-        });
     }
 }

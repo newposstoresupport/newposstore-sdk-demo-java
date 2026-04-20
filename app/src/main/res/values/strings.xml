@@ -99,10 +99,5 @@
     <string name="cancel">Cancel</string>
     <string name="update_success">Update Client ID Success!</string>
     <string name="download">download</string>
-    <string name="install">install</string>
     <string name="file_content_will_be_shown_here">File content will be shown here...</string>
-    <string name="file_not_exist">file not exist</string>
-    <string name="downloadtask_not_finish">download task not finish</string>
-    <string name="install_success">install success</string>
-    <string name="not_support">not_support</string>
 </resources>

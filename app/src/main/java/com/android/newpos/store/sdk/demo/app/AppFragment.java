@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.newpos.store.sdk.demo.R;
 import com.android.newpos.store.sdk.demo.base.BaseFragment;
 import com.android.newpos.store.sdk.demo.databinding.FragmentAppBinding;
-import com.newpos.store.android.sdk.dto.StoreApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,19 +49,7 @@ public class AppFragment extends BaseFragment<AppViewModel> {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         AppAdapter appAdapter = new AppAdapter(R.layout.item_app, new ArrayList<>());
         appAdapter.openLoadAnimation();
-        appAdapter.setListener(new AppItemListener() {
-            @Override
-            public void onClick(StoreApp storeApp) {
-                //start download app
-                getViewModel().downloadForUpdates(storeApp);
-            }
-
-            @Override
-            public void onInstallBtnClick(AppDownloadStatus app) {
-                //install app
-                getViewModel().installApk(app);
-            }
-        });
+        appAdapter.setListener(storeApp -> getViewModel().downloadForUpdates(storeApp));
         recyclerView.setAdapter(appAdapter);
         getViewModel().getAppList().observe(getViewLifecycleOwner(), appAdapter::setNewData);
     }
