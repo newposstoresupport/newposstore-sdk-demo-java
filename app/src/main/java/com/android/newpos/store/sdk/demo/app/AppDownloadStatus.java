@@ -19,13 +19,16 @@ public class AppDownloadStatus {
     public String percent;
     public DownloadStatus downloadStatus;
 
-    @NonNull
+    public String localFilePath;
+
     @Override
     public String toString() {
         return "AppDownloadStatus{" +
-                "pack='" + pack + '\'' +
+                "storeApp=" + storeApp +
+                ", pack='" + pack + '\'' +
                 ", percent='" + percent + '\'' +
                 ", downloadStatus=" + downloadStatus +
+                ", localFilePath='" + localFilePath + '\'' +
                 '}';
     }
 }

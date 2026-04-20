@@ -8,17 +8,14 @@ android {
     namespace 'com.android.newpos.store.sdk.demo'
     compileSdk 33
 
-    String version = new SimpleDateFormat("1.3.yyyyMMddHHmmss").format(new Date())
+    String version = new SimpleDateFormat("1.0.yyyyMMddHHmmss").format(new Date())
 
     defaultConfig {
         applicationId "com.android.newpos.store.sdk.demo"
         minSdk 22
         targetSdk 33
-        versionCode 3
+        versionCode 1
         versionName version
-
-        //versionCode 2//后台强关联版本号，先改2进行测试
-        //versionName "1.2.20260129164758"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,41 +44,14 @@ android {
     }
     buildFeatures {
         viewBinding true
-        buildConfig true
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "NewStoreSdkDemo" +
-                    "-${variant.productFlavors[0].name}" +
                     "-${defaultConfig.versionName}" +
                     "-${variant.buildType.name}.apk"
         }
 
-    }
-
-    flavorDimensions "env"
-    productFlavors {
-        dft {
-            applicationId "com.android.newpos.store.sdk.demo"
-            dimension "env"
-            buildConfigField("String", "APPID", "\"32292cc7e05a2b86ddea1d6746210283\"")
-            buildConfigField("String", "APPKEY", "\"c3ff54daf66bbbd2e8d8dbf08172a5aa\"")
-            buildConfigField("String", "APPSECRET", "\"a8e2188e9474692ea6a538f0a4f955ab\"")
-        }
-        LM {
-            applicationId "com.android.newpos.limiao.sdk.demo"
-            dimension "env"
-            buildConfigField("String", "APPID", "\"df23718a599c6b7b6ef897ca6bf0eea8\"")
-            buildConfigField("String", "APPKEY", "\"9c9664484e93b30437bf5eb81694530b\"")
-            buildConfigField("String", "APPSECRET", "\"69c2b57ec2937c9fb7500a9225bc02fe\"")
-        }
-        ZL {
-            applicationId "com.zhangle_sdk.test"
-            dimension "env"
-            buildConfigField("String", "APPID", "\"0ab12c358f5c385bf7f01fa0c6708547\"")
-            buildConfigField("String", "APPKEY", "\"d0351301924fd0c390c3541fd7e87c35\"")
-            buildConfigField("String", "APPSECRET", "\"faebbeb4fd2cc76d32b6869a92c1e714\"")
-        }
     }
 }
 
@@ -94,7 +64,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
-    implementation "androidx.work:work-runtime:2.7.0"
     implementation 'androidx.preference:preference:1.2.1'
     implementation "androidx.window:window:1.1.0"
     testImplementation 'junit:junit:4.13.2'
@@ -111,12 +80,12 @@ dependencies {
 
 
     //Directly dependent projects
-    implementation project(':api')
-    implementation project(':aidl')
+    //implementation project(':api')
+    //implementation project(':aidl')
 
     //Dependency central warehouse
-    //implementation "io.github.newposstoresupport:api:1.0.1"
-    //implementation "io.github.newposstoresupport:aidl:1.1"
+    implementation "io.github.newposstoresupport:api:1.0.2"
+    implementation "io.github.newposstoresupport:aidl:1.1"
 
     implementation 'com.squareup.okhttp3:okhttp:4.2.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'

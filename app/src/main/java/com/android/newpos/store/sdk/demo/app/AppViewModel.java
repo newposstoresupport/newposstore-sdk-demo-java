@@ -1,6 +1,8 @@
 package com.android.newpos.store.sdk.demo.app;
 
 import android.app.Application;
+import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.newpos.store.sdk.demo.R;
+import com.android.newpos.store.sdk.demo.base.AppUtils;
 import com.android.newpos.store.sdk.demo.base.BaseViewModel;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
@@ -17,6 +20,7 @@ import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.base.BaseException;
 import com.newpos.store.android.sdk.dto.StoreApp;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +39,9 @@ import io.reactivex.schedulers.Schedulers;
  * @website : <a href="https://www.newpostech.com/">...</a>
  */
 public class AppViewModel extends BaseViewModel {
+
+    private String FILE_SAVEPATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+
     public AppViewModel(@NonNull Application application) {
         super(application);
     }
@@ -63,8 +70,9 @@ public class AppViewModel extends BaseViewModel {
                 .observeOn(Schedulers.io())
                 .subscribe(b -> {
                     List<String> packList = new ArrayList<>();
-                    packList.add("com.newpos.rki");
-                    packList.add("com.core.softSignTest111");
+                    //note you need to modify the packagename with your own app
+                    packList.add("com.desert.android.appping");
+                    //packList.add("com.core.softSignTest111");
                     List<StoreApp> storeApps = StoreSdk.getInstance().appAbility().getStoreApps(packList);
                     if(storeApps == null || storeApps.isEmpty()){
                         throw new BaseException("No application found");
@@ -117,8 +125,9 @@ public class AppViewModel extends BaseViewModel {
      * @param storeApp StoreApp
      */
     public void downloadForUpdates(StoreApp storeApp){
-        showLoading(new LoadingOption("Downloading app..."));
-        String storagePath = FileDownloadUtils.generateFilePath(FileDownloadUtils.getDefaultSaveRootPath(),
+        //note this loading dialog is redundant
+        //showLoading(new LoadingOption("Downloading app..."));
+        String storagePath = FileDownloadUtils.generateFilePath(FILE_SAVEPATH,
                 FileDownloadUtils.md5(FileDownloadUtils.formatString("%s:%s",
                         storeApp.packageName, storeApp.verCode)));
         System.out.println(storagePath);
@@ -191,6 +200,7 @@ public class AppViewModel extends BaseViewModel {
                if(Objects.equals(status.pack, pack)){
                    status.downloadStatus = DownloadStatus.DOWNLOADED;
                    status.percent = "100%";
+                   status.localFilePath = task.getTargetFilePath();
                }
            }
            appList.postValue(appDownloads);
@@ -229,5 +239,25 @@ public class AppViewModel extends BaseViewModel {
        protected void warn(BaseDownloadTask task) {
            Log.w(TAG, "error:"+task);
        }
+   }
+
+   public void installApk(AppDownloadStatus app){
+       AppUtils.showToast(R.string.not_support);
+        //TODO:  due to some resons ,this part of source code need to be comment
+        /*if(app == null || app.downloadStatus != DownloadStatus.DOWNLOADED){
+            AppUtils.showToast(R.string.downloadtask_not_finish);
+            return;
+        }
+        File apk = new File(app.localFilePath);
+        if(TextUtils.isEmpty(app.localFilePath) || !apk.exists()){
+            AppUtils.showToast(R.string.file_not_exist);
+            return;
+        }
+        int result = SystemManager.installApp(app.localFilePath);
+        if(result == 0){
+            AppUtils.showToast(R.string.install_success);
+        }else{
+            AppUtils.showToast("install fail,code:" + result);
+        }*/
    }
 }
