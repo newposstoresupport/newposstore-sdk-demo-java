@@ -90,13 +90,13 @@ public class CloudMessageReceiver extends BroadcastReceiver {
                 String msgId = bundle.getString(CM_MSGID);
                 //TODO You can choose to download in the foreground or in the background.
 
-                //直接后台下载任务demo
+                //TODO 直接后台下载任务demo
                 //Download the task demo directly in the background
-                //AppUtils.startDownloadWorker(context, msgId);
+                AppUtils.startDownloadWorker(context, msgId);
 
-                //启动前台下载任务demo
+                //TODO 启动前台下载任务demo
                 //Launch the foreground download task demo
-                sendNotificationParamDownload(context, msgId);
+                //sendNotificationParamDownload(context, msgId);
             }
             if(CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS.equals(cmd)){
                 String messageId = bundle.getString(CM_MSGID);

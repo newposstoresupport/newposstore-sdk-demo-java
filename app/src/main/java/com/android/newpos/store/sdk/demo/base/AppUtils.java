@@ -163,7 +163,7 @@ public class AppUtils {
                     boolean result = replaceXmlFile(file.getAbsolutePath(), values, wrapped);
                     BaseLog.d("replace "+file+" "+result);
                 }else if(content.startsWith(JSON_PREFIX)){
-                    boolean result = replaceJsonFile();
+                    boolean result = replaceJsonFile(file.getAbsolutePath(), values, wrapped);
                     BaseLog.d("replace "+file+" "+result);
                 }
             }
@@ -215,8 +215,8 @@ public class AppUtils {
         return false;
     }
 
-    public static boolean replaceJsonFile(){
-        return false;
+    public static boolean replaceJsonFile(String filePath, JsonObject values, JsonObject wrapped){
+        return replaceXmlFile(filePath, values, wrapped);
     }
 
     public static void writeFile(String dir, ZipInputStream zis, ZipEntry entry) {
