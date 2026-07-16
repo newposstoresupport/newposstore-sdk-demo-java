@@ -32,7 +32,7 @@ import com.newpos.store.android.sdk.base.SPreference;
 import com.newpos.store.android.sdk.dto.AppElements;
 import com.newpos.store.android.sdk.dto.AuthenticationRequest;
 import com.newpos.store.android.sdk.listener.IStoreCallback;
-import com.pos.device.SDKManager;
+import com.android.newpos.store.sdk.demo.base.RomDeviceReflect;
 import com.tencent.mmkv.MMKV;
 
 import java.util.Objects;
@@ -87,7 +87,8 @@ public class MainApplication extends Application {
             } catch (Throwable ignored) {}
         });
 
-        SDKManager.init(getApplicationContext(), () -> {});
+        // ROM 设备 SDK：不依赖公开 sdk.jar，运行时反射调用
+        RomDeviceReflect.initSdkManager(getApplicationContext());
     }
 
     public void initStoreSdk(String clientId, InitCallback callback){

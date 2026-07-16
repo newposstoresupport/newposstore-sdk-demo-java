@@ -20,7 +20,7 @@ import com.newpos.store.android.sdk.StoreSdk;
 import com.newpos.store.android.sdk.dto.Firmware;
 import com.newpos.store.android.sdk.dto.FirmwareInfo;
 import com.newpos.store.android.sdk.dto.QueryFirmwareRequest;
-import com.pos.device.config.DevConfig;
+import com.android.newpos.store.sdk.demo.base.RomDeviceReflect;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,9 +68,9 @@ public class OTAViewModel extends BaseViewModel {
                 .subscribe(n -> {
                     QueryFirmwareRequest firmwareRequest = new QueryFirmwareRequest();
                     Firmware firmware = new Firmware();
-                    firmware.custom = DevConfig.CUSTOMER.NAME;
-                    firmware.firmwareId = DevConfig.getFirmwareId();
-                    firmware.version = DevConfig.getFirmwareVersion();
+                    firmware.custom = RomDeviceReflect.getCustomerName();
+                    firmware.firmwareId = RomDeviceReflect.getFirmwareId();
+                    firmware.version = RomDeviceReflect.getFirmwareVersion();
                     firmwareRequest.firmware = firmware;
                     firmwareInfo = StoreSdk.getInstance().otaAbility().queryFirmware(firmwareRequest);
                     if(firmwareInfo == null){

@@ -12,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.android.newpos.store.sdk.demo.databinding.FragmentOtaBinding;
 import com.android.newpos.store.sdk.demo.base.BaseFragment;
-import com.pos.device.sys.SystemManager;
 
 /**
  * @ClassName : OTAFragmemnt
@@ -48,7 +47,7 @@ public class OTAFragment extends BaseFragment<OTAViewModel> {
         binding.download.setOnClickListener(v -> getViewModel().downloadFirmware());
 
         binding.install.setOnClickListener(v -> {
-            //SystemManager.updateFirmware();
+            // 安装固件请按终端 ROM 能力自行接入（不依赖公开 sdk.jar）
         });
 
         getViewModel().getInfo().observe(getViewLifecycleOwner(), content -> {
