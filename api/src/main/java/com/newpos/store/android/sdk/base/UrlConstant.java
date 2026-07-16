@@ -18,5 +18,7 @@ public interface UrlConstant {
     String PARAM_TASK_QUERY = "store.paramTaskQuery";
     String PARAM_DOWN_QUERY = "store.paramDownQuery";
     String PARAM_DOWN_VERIFY = "store.paramDownVerify";
+    String FIRMWARE_QUERY = "updater.firmQuery";
+    String FIRMWARE_UPDATE = "updater.firmUpdate";
 
 }

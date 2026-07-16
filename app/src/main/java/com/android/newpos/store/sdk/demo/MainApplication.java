@@ -32,6 +32,7 @@ import com.newpos.store.android.sdk.base.SPreference;
 import com.newpos.store.android.sdk.dto.AppElements;
 import com.newpos.store.android.sdk.dto.AuthenticationRequest;
 import com.newpos.store.android.sdk.listener.IStoreCallback;
+import com.pos.device.SDKManager;
 import com.tencent.mmkv.MMKV;
 
 import java.util.Objects;
@@ -54,10 +55,10 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MainApplication extends Application {
     //TODO step 1
-    // make sure to replace with your own appid & appkey & appsecret
-    private static final String AppId = BuildConfig.APPID;//"32292cc7e05a2b86ddea1d6746210283";
-    private static final String AppKey = BuildConfig.APPKEY;//"c3ff54daf66bbbd2e8d8dbf08172a5aa";
-    private static final String AppSecret = BuildConfig.APPSECRET;//"a8e2188e9474692ea6a538f0a4f955ab";
+    // Demo credentials come from local.properties via BuildConfig（可替换为你自己的 AppId/AppKey/AppSecret）
+    private static final String AppId = BuildConfig.APPID;
+    private static final String AppKey = BuildConfig.APPKEY;
+    private static final String AppSecret = BuildConfig.APPSECRET;
     private static final ExecutorService INIT_EXECUTOR = Executors.newSingleThreadExecutor();
 
     private static final LoadingDialogManage ld = null;
@@ -86,6 +87,7 @@ public class MainApplication extends Application {
             } catch (Throwable ignored) {}
         });
 
+        SDKManager.init(getApplicationContext(), () -> {});
     }
 
     public void initStoreSdk(String clientId, InitCallback callback){

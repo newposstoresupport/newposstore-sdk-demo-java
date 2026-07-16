@@ -2,6 +2,8 @@ package com.newpos.store.android.sdk.base;
 
 import static com.newpos.store.android.sdk.Constant.ERROR_MARKET_AUTHENTICATION;
 import static com.newpos.store.android.sdk.Constant.ERROR_MARKET_NOT_INSTALLED;
+import static com.newpos.store.android.sdk.base.UrlConstant.FIRMWARE_QUERY;
+import static com.newpos.store.android.sdk.base.UrlConstant.FIRMWARE_UPDATE;
 import static com.newpos.store.android.sdk.base.UrlConstant.LBS_CELL_QUERY;
 import static com.newpos.store.android.sdk.base.UrlConstant.LBS_WIFI_QUERY;
 import static com.newpos.store.android.sdk.base.UrlConstant.PARAM_DOWN_QUERY;
@@ -40,8 +42,10 @@ import com.newpos.store.android.sdk.dto.ParamTask;
 import com.newpos.store.android.sdk.dto.ParamVerify;
 import com.newpos.store.android.sdk.dto.ParamVerifyRequestV2;
 import com.newpos.store.android.sdk.dto.PatchType;
+import com.newpos.store.android.sdk.dto.QueryFirmwareRequest;
 import com.newpos.store.android.sdk.dto.QueryKdhurlRequest;
 import com.newpos.store.android.sdk.dto.QueryRequest;
+import com.newpos.store.android.sdk.dto.UpdateFirmwareRequest;
 import com.newpos.store.android.sdk.listener.IApiCallback;
 
 import java.util.ArrayList;
@@ -406,5 +410,27 @@ public class BaseApi {
         }
 
         return null;
+    }
+
+    public String queryFirmware(QueryFirmwareRequest firmwareRequest){
+        if(storeClient == null){
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+        String request = BaseUtils.toJson(firmwareRequest);
+        BaseLog.d("request:"+request);
+
+        return requestWithCheck(FIRMWARE_QUERY, request);
+    }
+
+    public String updateFirmwareProgress(UpdateFirmwareRequest firmwareRequest){
+        if(storeClient == null){
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+        String request = BaseUtils.toJson(firmwareRequest);
+        BaseLog.d("request:"+request);
+
+        return requestWithCheck(FIRMWARE_UPDATE, request);
     }
 }

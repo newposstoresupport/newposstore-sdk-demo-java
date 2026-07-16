@@ -27,6 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NewStoreSDK"
         tools:targetApi="31">
+
+        <uses-library android:name="com.pos.device"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
