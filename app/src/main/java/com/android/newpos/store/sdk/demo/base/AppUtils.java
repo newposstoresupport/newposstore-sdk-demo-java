@@ -21,6 +21,7 @@ import com.newpos.store.android.sdk.base.BaseApi;
 import com.newpos.store.android.sdk.base.BaseLog;
 import com.newpos.store.android.sdk.dto.AttachFile;
 import com.newpos.store.android.sdk.dto.Mode;
+import com.newpos.store.android.sdk.util.ParamTemplateUtils;
 import com.tencent.mmkv.MMKV;
 
 import java.io.BufferedOutputStream;
@@ -178,6 +179,7 @@ public class AppUtils {
             String fileContent = readFileContent(filePath);
             String replaceResult = fileContent;
             BaseLog.d(fileContent);
+            JsonObject resolvedValues = new JsonObject();
             Set<String> keys = values.keySet();
             for (String key: keys){
                 boolean needDecrypt = false;
@@ -194,15 +196,9 @@ public class AppUtils {
                     }
                 }
                 BaseLog.d(key + " = " + value);
-                String label = "#\\{"+key+"\\}";
-                try {
-                    replaceResult = replaceResult.replaceAll(label, value);
-                }catch (Exception ignore){}
-//                if(replaceResult.matches(label)){
-//                    BaseLog.w("find label:"+key);
-//
-//                }
+                resolvedValues.addProperty(key, value);
             }
+            replaceResult = ParamTemplateUtils.replacePlaceholders(replaceResult, resolvedValues);
             BaseLog.d(replaceResult);
 
             if (!replaceResult.equals(fileContent)) {

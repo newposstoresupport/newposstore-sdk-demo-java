@@ -40,9 +40,11 @@ Our [change log]() has release history.
 The latest release is available on [Maven Central](https://mvnrepository.com/).
 
 ```kotlin
-    implementation("io.github.newposstoresupport:api:1.0.2")
+    implementation("io.github.newposstoresupport:api:1.0.3")
     implementation("io.github.newposstoresupport:aidl:1.1")
 ```
+
+> This demo keeps local `:api` / `:aidl` modules for source reference. Published Maven `api:1.0.3` adds Param V2 and Firmware capabilities. Demo credentials are provided in `local.properties` (intentionally committed).
 
 ## License
 
