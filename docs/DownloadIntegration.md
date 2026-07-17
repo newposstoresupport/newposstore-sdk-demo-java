@@ -52,7 +52,7 @@ Create parameter template
 
 For the detailed operation video, you can refer to the following link
 
-[https://cdn.newposstore.com/share/parameter_download.mp4](param download)
+[https://cdn.newposstore.com/share/parameter_download.mp4]
 
 
 
