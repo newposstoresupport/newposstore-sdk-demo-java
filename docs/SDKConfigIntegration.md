@@ -12,7 +12,7 @@ The parameters such as AppKey obtained through creating the capability applicati
 
 After you complete the creation of the capability application on the NewStore platform, by clicking the "Copy" button as shown in the figure below, you will obtain the corresponding APPKey information.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo4.png)
+![](./files/appkeyinfo4.png)
 
 ```javascript
 {"appId":"5d3a7c9cf5ef0ae9984a46a298f137ec","appKey":"9231bdfa47f2e1a8aeadad51528201b6","appSecret":"9c4b04cbe7b9ddd99052c6d470db98d7"}
@@ -20,11 +20,11 @@ After you complete the creation of the capability application on the NewStore pl
 
 In the local.properties configuration file of the project, configure the corresponding appkey information as shown in the following figure.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo.png)
+![](./files/appkeyinfo.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo2.png)
+![](./files/appkeyinfo2.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo3.png)
+![](./files/appkeyinfo3.png)
 
 
 

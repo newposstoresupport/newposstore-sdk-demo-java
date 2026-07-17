@@ -20,7 +20,7 @@ After creating the capability application and configuring the corresponding APPK
 
 
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\auth_success.png)
+![](./files/auth_success.png)
 
 ## upload application
 
@@ -34,19 +34,19 @@ Among the following options, select "Upload Application"
 
 Wait for the APP upload to be successful. You will see the APP in the draft box at this time. Then, go ahead and create the parameter template file.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param3.png)
+![](./files/param3.png)
 
 ## Create parameter template
 
 Create parameter template
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param1.png)
+![](./files/param1.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param4.png)
+![](./files/param4.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param5.png)
+![](./files/param5.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param6.png)
+![](./files/param6.png)
 
 
 
@@ -60,25 +60,25 @@ For the detailed operation video, you can refer to the following link
 
 Open the application icon in the Developer Center, and then enter the application editing page.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param8.png)
+![](./files/param8.png)
 
 Then, follow the operations shown in the following screenshots one by one.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param10.png)
+![](./files/param10.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param12.png)
+![](./files/param12.png)
 
 After completing the editing of the application information, click the "save", "submit" or "listing" buttons in sequence.
 
 
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param13.png)
+![](./files/param13.png)
 
 
 
 
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param14.png)
+![](./files/param14.png)
 
 
 
@@ -86,19 +86,19 @@ After completing the editing of the application information, click the "save", "
 
 Please follow the steps below for operation.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param21.png)
+![](./files/param21.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param23.png)
+![](./files/param23.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param24.png)
-
-
-
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param25.png)
+![](./files/param24.png)
 
 
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param26.png)
+![](./files/param25.png)
+
+
+
+![](./files/param26.png)
 
 
 
@@ -110,31 +110,31 @@ After setting the values of the parameters, click the "Save" button
 
 Please follow the following steps to create a parameter file push task for a single device
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param38.png)
+![](./files/param38.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param39.png)
-
-
-
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param27.png)
-
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param28.png)
-
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param29.png)
-
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param35.png)
-
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param36.png)
+![](./files/param39.png)
 
 
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param37.png)
+![](./files/param27.png)
+
+![](./files/param28.png)
+
+![](./files/param29.png)
+
+![](./files/param35.png)
+
+![](./files/param36.png)
+
+
+
+![](./files/param37.png)
 
 ## Create a group push task
 
 It's only that the entry is in the Group; otherwise, the operations are the same as those for a single device.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param40.png)
+![](./files/param40.png)
 
 
 
@@ -148,15 +148,15 @@ eg:
 
 I added a MID variable placeholder to the template.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param45.png)
+![](./files/param45.png)
 
 
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param47.png)
+![](./files/param47.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param46.png)
+![](./files/param46.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param48.png)
+![](./files/param48.png)
 
 In this way, when downloading the parameter file at the terminal, the created variables will replace the placeholder contents in the parameter file.
 
@@ -164,7 +164,7 @@ In this way, when downloading the parameter file at the terminal, the created va
 
 The variables in the group are the same as those of a single device variable in terms of logic, but the creation location has changed. As shown in the following figure.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param49.png)
+![](./files/param49.png)
 
 
 
@@ -172,13 +172,13 @@ The variables in the group are the same as those of a single device variable in 
 
 During the testing phase, you can use the code in the DEMO project to download the parameter files.
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param41.png)
+![](./files/param41.png)
 
 An example of successful download of the parameter file is as follows
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param30.png)
+![](./files/param30.png)
 
-![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param31.png)
+![](./files/param31.png)
 
 # Parameter file download SDK interface description
 
