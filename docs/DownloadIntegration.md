@@ -16,7 +16,13 @@ click AddAbility button
 
 ![](./files/addNewstoreClientPermission.png)
 
-## upload App
+After creating the capability application and configuring the corresponding APPKEY information in the client DEMO project, run your channel package. If you see the following log output in the logcat console, it indicates that the relevant configuration is working properly.
+
+
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\auth_success.png)
+
+## upload application
 
 Upload the APP to the Developer Center,as the below picture
 
@@ -26,109 +32,171 @@ Among the following options, select "Upload Application"
 
 ![](./files/uploadApp2.png)
 
-According to the requirements of the page content, complete the information upload for the APP.
+Wait for the APP upload to be successful. You will see the APP in the draft box at this time. Then, go ahead and create the parameter template file.
 
-# uploadParameter
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param3.png)
 
-## Parameter file classification
+## Create parameter template
 
-### APP-level parameters
+Create parameter template
 
-This parameter file is bound to the APP. All terminals that have installed this APP will retrieve the same parameter file.
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param1.png)
 
-### Terminal-level parameters
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param4.png)
 
-This parameter file is not only associated with the current APP, but also with the current terminal's SN. Its level is higher than that of the parameter files of the APP. When both are configured, the terminal-level parameters will be returned first.
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param5.png)
 
-
-
-## Upload the parameter file at the APP level
-
-Click on your APP in the Developer Center
-
-![](./files/addParameterAppItem.png)
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param6.png)
 
 
 
-Click the operation button at the top right corner of the page to upload the parameter file.
+For the detailed operation video, you can refer to the following link
 
-![](./files/uploadParamFile.png)
-
-
-
-You can upload the parameter file on the following page.
-
-![](./files/uploadParameterFile.png)
-
-## Upload the terminal parameter file
-
-This parameter file is only applicable to the specific SN terminal. It has a higher priority than the parameter file at the APP level and will override the parameter file at the APP level.
-
-Follow the steps below to operate.
+[https://cdn.newposstore.com/share/parameter_download.mp4](param download)
 
 
 
-![](./files/DeviceList.png)
+## Add parameter template file for the application
+
+Open the application icon in the Developer Center, and then enter the application editing page.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param8.png)
+
+Then, follow the operations shown in the following screenshots one by one.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param10.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param12.png)
+
+After completing the editing of the application information, click the "save", "submit" or "listing" buttons in sequence.
 
 
 
-![](./files/TerminalParaFile.png)
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param13.png)
 
-![](./files/TerminFileSelect.png)
 
-after upload the parameter file ,click save button to take effect.
+
+
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param14.png)
+
+
+
+## Create push templates for the application
+
+Please follow the steps below for operation.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param21.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param23.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param24.png)
+
+
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param25.png)
+
+
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param26.png)
+
+
+
+After setting the values of the parameters, click the "Save" button
+
+
+
+## Create a push task for a single device
+
+Please follow the following steps to create a parameter file push task for a single device
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param38.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param39.png)
+
+
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param27.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param28.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param29.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param35.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param36.png)
+
+
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param37.png)
+
+## Create a group push task
+
+It's only that the entry is in the Group; otherwise, the operations are the same as those for a single device.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param40.png)
+
+
+
+# Parameter Template Variable Configuration Explanation
+
+## Single device variable
+
+Variables allow for pre-occupation of variables in the process of creating templates using the format #{varName}. When creating parameter files for push, through configuration of variables, the parameter files generated by the terminal when downloading the parameter files will replace the placeholders in the parameter template files with the set variables, achieving the function of dynamic variable configuration.
+
+eg:
+
+I added a MID variable placeholder to the template.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param45.png)
+
+
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param47.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param46.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param48.png)
+
+In this way, when downloading the parameter file at the terminal, the created variables will replace the placeholder contents in the parameter file.
+
+## Grouping variable
+
+The variables in the group are the same as those of a single device variable in terms of logic, but the creation location has changed. As shown in the following figure.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param49.png)
+
+
+
+# Download of parameter file
+
+During the testing phase, you can use the code in the DEMO project to download the parameter files.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param41.png)
+
+An example of successful download of the parameter file is as follows
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param30.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\param31.png)
 
 # Parameter file download SDK interface description
 
 ## Query parameter file
 
 ```java
-public void queryParamFile(){
-        showLoading(new LoadingOption("Querying parameter list..."));
-        addSubscribe(Observable.just(true)
-                .observeOn(Schedulers.io())
-                .subscribe(n -> {
-                    appResponseList = StoreSdk.getInstance().paramAbility().queryParamsList();
-                    if(appResponseList.isEmpty()){
-                        mInfo.postValue("There is no parameter file under the application. Please go to the cloud platform to upload it.");
-                    }else {
-                        StringBuilder builder = new StringBuilder();
-                        for (AppResponse appResponse : appResponseList){
-                            builder.append(appResponse.toString()).append("\n");
-                        }
-                        mInfo.postValue(builder.toString());
-                    }
-                    dismissLoading();
-                }, throwable -> {
-                    dismissLoading();
-                    showError(throwable);
-                })
-        );
-    }
+public List<ParamTask> queryParamTask() throws BaseException{}
 ```
 
-## Query parameter file successful data example
+Query parameter file successful data example
 
-```
+```javascript
 {
     "code": "0000",
     "data": [
         {
-            "attachFiles": [
-                {
-                    "fileSize": 26,
-                    "id": 33,
-                    "patchHash": "8C55D8E773DD6335DF16763191992BCBC0C8C3F16184C5C346C4510EB91E9F75",
-                    "patchType": 1,
-                    "patchUrl": "https://cdn.ns.newposp.com/newstore/base/apk/param/33/para1.txt?r=1967482853708345344&s=1757942139-483-9276cd9f75fdfd5b311ea1af99e81a2d7ec3c9a0&u=5&t=3&i=1937443474744762368",
-                    "patchVer": 2,
-                    "source": "5"
-                }
-            ],
-            "fallback": 0,
-            "packageName": "com.android.newpos.store.sdk.demo.xiaobo",
-            "verCode": 1,
-            "verName": "1.0.20250915161754"
+            "messageId": "8e5a9e3a801f4cc7950a2da62ac1526d",
+            "pushTaskId": 100542
         }
     ],
     "msg": "success",
@@ -136,41 +204,47 @@ public void queryParamFile(){
 }
 ```
 
-
-
 ## Download the parameter file
 
-
-
 ```java
-public void downloadParamFile(){
-        showLoading(new LoadingOption("Downloading parameter file..."));
-        addSubscribe(Observable.just(true)
-                .observeOn(Schedulers.io())
-                .subscribe(n -> {
-                    if(appResponseList == null || appResponseList.isEmpty()){
-                        mInfo.postValue("There is no parameter list, please query first!");
-                        dismissLoading();
-                        return;
-                    }
-                    ParamAbility paramAbility = StoreSdk.getInstance().paramAbility();
-                    ParamDownloadRequest paramDownloadRequest = new ParamDownloadRequest();
-                    paramDownloadRequest.setPackageName(getApplication().getPackageName());
-                    paramDownloadRequest.setSaveFilePath(getApplication().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
-                    paramDownloadRequest.setVersionCode(1);
-                    paramDownloadRequest.setSerialNumber(paramAbility.getSerialNumber());
-                    ParamDownloadResponse paramDownloadResponse = paramAbility.downloadParamToPath(paramDownloadRequest, appResponseList.get(0));
-                    paramDownloadResponseMutableLiveData.postValue(paramDownloadResponse);
-                    dismissLoading();
-                }, throwable -> {
-                    dismissLoading();
-                    showError(throwable);
-                })
-        );
-    }
+public List<ParamDownQueryV2Data> queryParamDown(ParamTask task) throws BaseException{}
 ```
 
 Example of successful download of parameter file
 
-![](./files/parameterfilelocal.png)
+```javascript
+{
+    "code": "0000",
+    "data": [
+        {
+            "attachFiles": [
+                {
+                    "patchType": 1,
+                    "patchUrl": "https://cdn.newposstore.com/base/apk/2077953664221134848/params/task_100542_1981587988464668672.zip?r=100542&s=1786867877-206-ff5af3a84dc5b2357d744d52a39e6d8e356c6e3d&u=4&t=3&i=1981587988464668672"
+                }
+            ],
+            "param": {
+
+            },
+            "wrapped": {
+
+            }
+        }
+    ],
+    "msg": "success",
+    "total": 0
+}
+```
+
+## Download completion confirmation interface
+
+```java
+public boolean paramCallResult(ParamVerify paramVerify) throws BaseException{}
+```
+
+Download completion interface response data example
+
+```javascript
+{"code":"0000","msg":"success"}
+```
 

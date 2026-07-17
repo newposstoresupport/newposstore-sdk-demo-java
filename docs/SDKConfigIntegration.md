@@ -8,13 +8,37 @@ The operation steps for creating an ability application can be referred to in th
 
 # Configure relevant parameters #
 ## config appKey infomation ##
-The parameters such as AppKey obtained through creating the capability application need to be configured in the MainApplication.java file of the app module of the current project. Of course, this is a demo project. The specific configuration location should be according to the requirements of the third-party APP project.
-![appkeyinfo](./files/appkeyinfo.png)
+The parameters such as AppKey obtained through creating the capability application need to be configured in the  file of the app module of the current project. Of course, this is a demo project. The specific configuration location should be according to the requirements of the third-party APP project.
+
+After you complete the creation of the capability application on the NewStore platform, by clicking the "Copy" button as shown in the figure below, you will obtain the corresponding APPKey information.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo4.png)
+
+```javascript
+{"appId":"5d3a7c9cf5ef0ae9984a46a298f137ec","appKey":"9231bdfa47f2e1a8aeadad51528201b6","appSecret":"9c4b04cbe7b9ddd99052c6d470db98d7"}
+```
+
+In the local.properties configuration file of the project, configure the corresponding appkey information as shown in the following figure.
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo2.png)
+
+![](D:\SvnLocal\newstoregit\newposstore-sdk-demo-java\docs\files\appkeyinfo3.png)
+
+
+
+Following the above steps, the corresponding APPKEY information has been successfully configured in the DEMO project, and you can now proceed with the corresponding tests.
 
 ## modify appliciationId ##
 Modify the applicationId in the project's build.gradle file to the package name configured when creating the capability application.
+
+
+
 # Do Test #
 Currently, the APP testing relies on the NEWPOS intelligent terminal, and the terminal needs to install the NEWPOSSTORE app. For the intelligent terminal equipment and related installation package APP, you can contact newposstore@newpostech.com for acquisition.
+
+According to the above process, the ApplicatinoId you have applied for is the applicationId corresponding to the channel package configuration in the build.grale script. This value must be consistent with the package name filled in when creating the capability application.
 
 # Notes for Attention #
 - The signature fingerprint information filled in when creating the capability application is the SHA256 fingerprint information of the signature certificate, represented as a 16-digit hexadecimal string, with colons separating the digits.
