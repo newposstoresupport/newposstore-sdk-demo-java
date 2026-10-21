@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `TerminalLocationAbility` 与 Demo 单独一页：经商店 AIDL 取终端谷歌/百度定位（含地址）。Maven `api:1.0.4`，需 `aidl:1.2`。
 - Firmware OTA demo：查询 / 下载固件（对齐 StoreSdk api `1.0.3`）
 - `RomDeviceReflect`：ROM `DevConfig` / `SDKManager` 反射调用（不依赖公开 `sdk.jar`）
 - `local.properties` 提供 demo 测试凭据（随仓库提交，供客户直接运行）
@@ -15,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - 凭据改为从 `local.properties` / 环境变量读取，不再硬编码在 `app/build.gradle`
-- README Maven 示例版本更新为 `api:1.0.3`
+- README Maven 示例版本更新为 `api:1.0.4` / `aidl:1.2`
 - Param 相关 demo 与 StoreSdk 基准对齐（含 Param V2）
 - 移除公开仓库中的 `app/libs/sdk.jar` 及 Gradle `compileOnly` 依赖
 

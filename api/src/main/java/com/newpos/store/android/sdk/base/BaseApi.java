@@ -271,6 +271,22 @@ public class BaseApi {
         return null;
     }
 
+    /**
+     * 经商店取终端谷歌/百度定位。同步等待，不要在主线程调。
+     */
+    public String getTerminalLocation(String json) {
+        if (storeClient == null) {
+            BaseLog.e("please init firstly!");
+            return null;
+        }
+        try {
+            return storeClient.getTerminalLocation(json);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public String queryAppAppendix(PatchType patchType){
         if(storeClient == null){
             BaseLog.e("please init firstly!");

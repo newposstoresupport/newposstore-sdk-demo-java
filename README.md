@@ -40,11 +40,11 @@ Our [change log]() has release history.
 The latest release is available on [Maven Central](https://mvnrepository.com/).
 
 ```kotlin
-    implementation("io.github.newposstoresupport:api:1.0.3")
-    implementation("io.github.newposstoresupport:aidl:1.1")
+    implementation("io.github.newposstoresupport:api:1.0.4")
+    implementation("io.github.newposstoresupport:aidl:1.2")
 ```
 
-> This demo keeps local `:api` / `:aidl` modules for source reference. Published Maven `api:1.0.3` adds Param V2 and Firmware capabilities. Demo credentials are provided in `local.properties` (intentionally committed).
+> This demo keeps local `:api` / `:aidl` modules for source reference. Published Maven `api:1.0.4` adds terminal Google/Baidu location (`TerminalLocationAbility`) and requires `aidl:1.2`. Demo credentials are provided in `local.properties` (intentionally committed).
 
 ## License
 

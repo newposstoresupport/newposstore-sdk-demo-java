@@ -5,7 +5,7 @@ plugins {
     id 'com.android.application'
 }
 
-/** 读取凭据：环境变量 > Gradle -P > 根目录 local.properties（demo 测试 key 已随仓库提供）。 */
+/** 读取凭据与可选配置：环境变量 > Gradle -P > 根目录 local.properties（勿将密钥提交仓库）。 */
 def storeSdkProp = { String key ->
     def e = System.getenv(key)
     if (e != null) return e
@@ -33,7 +33,18 @@ android {
         versionCode 3
         versionName version
 
+        //versionCode 2//后台强关联版本号，先改2进行测试
+        //versionName "1.2.20260129164758"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        def notAnn = project.findProperty('instrumentNotAnnotation')?.toString()?.trim()
+        if (notAnn) {
+            testInstrumentationRunnerArgument 'notAnnotation', notAnn
+        }
+        def annOnly = project.findProperty('instrumentAnnotation')?.toString()?.trim()
+        if (annOnly) {
+            testInstrumentationRunnerArgument 'annotation', annOnly
+        }
     }
     signingConfigs {
         newstore{
@@ -95,6 +106,13 @@ android {
             buildConfigField("String", "APPKEY", "\"${storeSdkProp('STORESDK_DEMO_ZL_APP_KEY')}\"")
             buildConfigField("String", "APPSECRET", "\"${storeSdkProp('STORESDK_DEMO_ZL_APP_SECRET')}\"")
         }
+        staging {
+            applicationId "com.android.newpos.store.sdk.demo"
+            dimension "env"
+            buildConfigField("String", "APPID", "\"${storeSdkProp('STORESDK_STAGING_APP_ID')}\"")
+            buildConfigField("String", "APPKEY", "\"${storeSdkProp('STORESDK_STAGING_APP_KEY')}\"")
+            buildConfigField("String", "APPSECRET", "\"${storeSdkProp('STORESDK_STAGING_APP_SECRET')}\"")
+        }
     }
 }
 
@@ -123,12 +141,12 @@ dependencies {
     implementation 'com.tencent:mmkv:1.2.10'
 
 
-    // Directly dependent projects (source modules for reference)
+    //Directly dependent projects
     implementation project(':api')
     implementation project(':aidl')
 
-    // Maven Central (aligned with published api 1.0.3: Param V2 + Firmware)
-    //implementation "io.github.newposstoresupport:api:1.0.3"
+    //Dependency central warehouse
+    //implementation "io.github.newposstoresupport:api:1.0.1"
     //implementation "io.github.newposstoresupport:aidl:1.1"
 
     implementation 'com.squareup.okhttp3:okhttp:4.2.0'

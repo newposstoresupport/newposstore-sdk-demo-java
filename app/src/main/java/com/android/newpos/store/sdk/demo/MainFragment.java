@@ -17,6 +17,7 @@ import com.android.newpos.store.sdk.demo.app.AppFragment;
 import com.android.newpos.store.sdk.demo.common.CommonFragment;
 import com.android.newpos.store.sdk.demo.inquirer.AppInquirerFragment;
 import com.android.newpos.store.sdk.demo.lbs.LbsFragment;
+import com.android.newpos.store.sdk.demo.terminallocation.TerminalLocationFragment;
 import com.android.newpos.store.sdk.demo.ota.OTAFragment;
 import com.android.newpos.store.sdk.demo.param.ParamFragment;
 import com.android.newpos.store.sdk.demo.register.RegisterFragment;
@@ -62,6 +63,7 @@ public class MainFragment extends Fragment {
         items.add(new MenuItem(R.mipmap.register, getString(R.string.menu_register), RegisterFragment.class));
         items.add(new MenuItem(R.mipmap.inquirer, getString(R.string.menu_inquirer), AppInquirerFragment.class));
         items.add(new MenuItem(R.mipmap.position, getString(R.string.menu_lbs), LbsFragment.class));
+        items.add(new MenuItem(R.mipmap.position, getString(R.string.menu_terminal_location), TerminalLocationFragment.class));
         items.add(new MenuItem(R.mipmap.params, getString(R.string.menu_param), ParamFragment.class));
         items.add(new MenuItem(R.mipmap.ota, getString(R.string.menu_ota), OTAFragment.class));
         items.add(new MenuItem(R.mipmap.cloud, getString(R.string.menu_cloud), CloudFragment.class));
