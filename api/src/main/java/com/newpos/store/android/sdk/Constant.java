@@ -55,4 +55,12 @@ public interface Constant {
      * Parameter download for third-party app
      */
     String CLOUD_MESSAGE_TYPE_DOWN_PARAM = "A006";
+    /**
+     * 参数文件 V1。商店只转发，应用自己下载。
+     */
+    String CLOUD_MESSAGE_TYPE_PARAM_FILE_V1 = "A010";
+    /**
+     * 参数文件 V2。商店只转发，应用自己下载。
+     */
+    String CLOUD_MESSAGE_TYPE_PARAM_FILE_V2 = "A011";
 }

@@ -85,11 +85,21 @@ public class AppUtils {
     }
 
     public static void startDownloadWorker(Context context, String msgId){
+        enqueueParamDownload(context, msgId, false);
+    }
+
+    /** 参数文件 V1，对应云消息 A010。 */
+    public static void startParamFileV1(Context context, String msgId){
+        enqueueParamDownload(context, msgId, true);
+    }
+
+    private static void enqueueParamDownload(Context context, String msgId, boolean v1){
         Constraints constraints = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
         Data inputData = new Data.Builder()
                 .putString(KEY_MESSAGE_ID, msgId)
+                .putBoolean(DownloadWorker.KEY_PARAM_V1, v1)
                 .build();
         OneTimeWorkRequest request =
                 new OneTimeWorkRequest.Builder(DownloadWorker.class)
