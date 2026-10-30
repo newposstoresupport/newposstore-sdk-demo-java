@@ -5,6 +5,8 @@ import static com.android.newpos.store.sdk.demo.base.AppUtils.showToast;
 import static com.android.newpos.store.sdk.demo.base.DownloadWorker.KEY_MESSAGE_ID;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_DOWN_PARAM;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_NOTIFICATION;
+import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_PARAM_FILE_V1;
+import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_PARAM_FILE_V2;
 import static com.newpos.store.android.sdk.Constant.CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS;
 import static com.newpos.store.android.sdk.Constant.CM_DATA;
 import static com.newpos.store.android.sdk.Constant.CM_MSGID;
@@ -86,17 +88,18 @@ public class CloudMessageReceiver extends BroadcastReceiver {
                 boolean bubble = bundle.getBoolean(Constant.CM_BADGE);
                 sendNotificationMessage(context, title, content, sound, bubble);
             }
-            if(CLOUD_MESSAGE_TYPE_DOWN_PARAM.equals(cmd)){
+            if(CLOUD_MESSAGE_TYPE_DOWN_PARAM.equals(cmd)
+                    || CLOUD_MESSAGE_TYPE_PARAM_FILE_V2.equals(cmd)){
                 String msgId = bundle.getString(CM_MSGID);
-                //TODO You can choose to download in the foreground or in the background.
-
-                //TODO 直接后台下载任务demo
-                //Download the task demo directly in the background
+                // A006 与 A011 都走参数 V2。A011 由商店原样转发。
                 AppUtils.startDownloadWorker(context, msgId);
 
                 //TODO 启动前台下载任务demo
                 //Launch the foreground download task demo
                 //sendNotificationParamDownload(context, msgId);
+            }
+            if(CLOUD_MESSAGE_TYPE_PARAM_FILE_V1.equals(cmd)){
+                AppUtils.startParamFileV1(context, bundle.getString(CM_MSGID));
             }
             if(CLOUD_MESSAGE_TYPE_RKI_DOWN_CUSTOMER_KEYS.equals(cmd)){
                 String messageId = bundle.getString(CM_MSGID);

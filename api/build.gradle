@@ -10,6 +10,14 @@ android {
         minSdk 22
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        def notAnnApi = project.findProperty('instrumentNotAnnotation')?.toString()?.trim()
+        if (notAnnApi) {
+            testInstrumentationRunnerArgument 'notAnnotation', notAnnApi
+        }
+        def annApi = project.findProperty('instrumentAnnotation')?.toString()?.trim()
+        if (annApi) {
+            testInstrumentationRunnerArgument 'annotation', annApi
+        }
         consumerProguardFiles "consumer-rules.pro"
     }
 

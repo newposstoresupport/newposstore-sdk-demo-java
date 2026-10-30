@@ -32,6 +32,11 @@
         app:title="@string/menu_lbs"
         app:summary="@string/menu_lbs_detail"/>
     <Preference
+        app:icon="@mipmap/position"
+        app:fragment="com.android.newpos.store.sdk.demo.terminallocation.TerminalLocationFragment"
+        app:title="@string/menu_terminal_location"
+        app:summary="@string/menu_terminal_location_detail"/>
+    <Preference
         app:icon="@mipmap/params"
         app:fragment="com.android.newpos.store.sdk.demo.param.ParamFragment"
         app:title="@string/menu_param"

@@ -20,6 +20,7 @@ import com.newpos.store.android.sdk.ability.OtaAbility;
 import com.newpos.store.android.sdk.ability.ParamAbility;
 import com.newpos.store.android.sdk.ability.ParamAbilityV2;
 import com.newpos.store.android.sdk.ability.RkiAbility;
+import com.newpos.store.android.sdk.ability.TerminalLocationAbility;
 import com.newpos.store.android.sdk.ability.UpgradeAbility;
 import com.newpos.store.android.sdk.base.BaseApi;
 import com.newpos.store.android.sdk.base.BaseLog;
@@ -61,6 +62,7 @@ public class StoreSdk {
     private OtaAbility otaAbility;
     private RkiAbility rkiAbility;
     private AppAbility appAbility;
+    private TerminalLocationAbility terminalLocationAbility;
 
     public static StoreSdk getInstance(){
         if(null == store){
@@ -273,6 +275,20 @@ public class StoreSdk {
     }
 
     /**
+     * 终端谷歌/百度定位（含地址）。与 {@link LbsAbility} 云端基站/WiFi 分开。
+     * 同步 AIDL，不要在主线程调。
+     */
+    public TerminalLocationAbility terminalLocationAbility(){
+        if (terminalLocationAbility == null) {
+            acquireSemaphore();
+            if (terminalLocationAbility == null) {
+                throw new IllegalStateException("Not initialized");
+            }
+        }
+        return terminalLocationAbility;
+    }
+
+    /**
      * Open the details of an application in the App Market
      */
     public void openAppDetail(String packageName){
@@ -366,6 +382,7 @@ public class StoreSdk {
             rkiAbility = new RkiAbility(ai.getBaseUrl(), appElements, ai.getSerialNo(), map.get(EAbility.RKI));
         }
         appAbility = new AppAbility(ai.getBaseUrl(), appElements, ai.getSerialNo(), map.get(EAbility.APP));
+        terminalLocationAbility = new TerminalLocationAbility(ai.getBaseUrl(), appElements, ai.getSerialNo(), new ArrayList<String>());
     }
 
     /**

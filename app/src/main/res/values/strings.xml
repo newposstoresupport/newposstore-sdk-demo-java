@@ -46,6 +46,18 @@
     <string name="menu_lbs_detail">Third-party applications use base stations to locate terminals</string>
     <string name="get_location">get Location</string>
 
+    <string name="menu_terminal_location">Terminal Location</string>
+    <string name="menu_terminal_location_detail">Get terminal Google/Baidu location and address via Store AIDL; 60s cache</string>
+    <string name="get_terminal_location">get Terminal Location</string>
+    <string name="tl_provider_follow">Follow store setting</string>
+    <string name="tl_provider_google">google</string>
+    <string name="tl_provider_baidu">baidu</string>
+    <string name="tl_label_address">address</string>
+    <string name="tl_label_lat">lat</string>
+    <string name="tl_label_lon">lon</string>
+    <string name="tl_label_provider">provider</string>
+    <string name="tl_label_time">time</string>
+
 
     <string name="menu_param">Parameters Download</string>
     <string name="menu_param_detail">Third-party applications download the parameters configured on the cloud platform through Core</string>

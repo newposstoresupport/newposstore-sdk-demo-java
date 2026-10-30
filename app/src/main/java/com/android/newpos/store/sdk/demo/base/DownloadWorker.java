@@ -2,6 +2,8 @@ package com.android.newpos.store.sdk.demo.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -13,10 +15,13 @@ import androidx.work.WorkerParameters;
 
 import com.android.newpos.store.sdk.demo.MainApplication;
 import com.newpos.store.android.sdk.StoreSdk;
+import com.newpos.store.android.sdk.ability.ParamAbility;
 import com.newpos.store.android.sdk.ability.ParamAbilityV2;
 import com.newpos.store.android.sdk.base.BaseException;
 import com.newpos.store.android.sdk.base.BaseLog;
 import com.newpos.store.android.sdk.dto.ParamDownQueryV2Data;
+import com.newpos.store.android.sdk.dto.ParamDownloadRequest;
+import com.newpos.store.android.sdk.dto.ParamDownloadResponse;
 import com.newpos.store.android.sdk.dto.ParamDownV2Result;
 import com.newpos.store.android.sdk.dto.ParamTask;
 import com.newpos.store.android.sdk.dto.ParamVerify;
@@ -38,6 +43,8 @@ public class DownloadWorker extends Worker {
 
     private static final String TAG = DownloadWorker.class.getSimpleName();
     public static final String KEY_MESSAGE_ID = "msgId";
+    /** true 时走参数 V1（A010），否则走参数 V2（A006 / A011）。 */
+    public static final String KEY_PARAM_V1 = "paramV1";
     public static final String KEY_PATH_DIR = "pathDir";
     public static final String KEY_RESULT = "workerResult";
     public static final String ACTION_DOWNLOAD_FINISH = "android.action.DOWNLOAD_PARAM_FINISH";
@@ -65,6 +72,10 @@ public class DownloadWorker extends Worker {
         String msgId = getInputData().getString(KEY_MESSAGE_ID);
         BaseLog.d("DownloadWorker msgId："+msgId);
         try {
+            if (getInputData().getBoolean(KEY_PARAM_V1, false)) {
+                downloadParamV1(context);
+                return Result.success();
+            }
             ParamAbilityV2 paramAbilityV2 = StoreSdk.getInstance().paramAbilityV2();
             List<ParamTask> paramTasks = paramAbilityV2.queryParamTask();
             Log.d(TAG, "paramTasks:"+paramTasks);
@@ -112,6 +123,25 @@ public class DownloadWorker extends Worker {
             return Result.failure();
         }
         return Result.success();
+    }
+
+    private void downloadParamV1(Context context) throws BaseException, PackageManager.NameNotFoundException {
+        ParamAbility ability = StoreSdk.getInstance().paramAbility();
+        java.io.File dir = context.getExternalFilesDir(android.os.Environment.DIRECTORY_DOWNLOADS);
+        if (dir == null) {
+            throw new BaseException("download dir unavailable");
+        }
+        PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        ParamDownloadRequest request = new ParamDownloadRequest();
+        request.setPackageName(context.getPackageName());
+        request.setSaveFilePath(dir.getAbsolutePath());
+        request.setVersionCode(info.versionCode);
+        request.setSerialNumber(ability.getSerialNumber());
+        ParamDownloadResponse response = DownloadFileManager.downloadParamToPath(request, null);
+        if (response == null) {
+            throw new BaseException("no param files");
+        }
+        AppUtils.showToast("download param success, app can init.....");
     }
 
     private void callback(ParamTask task, boolean success){

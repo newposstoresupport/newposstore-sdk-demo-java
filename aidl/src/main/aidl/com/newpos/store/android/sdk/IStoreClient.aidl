@@ -149,4 +149,16 @@ interface IStoreClient {
     *
     */
     byte[] doEncryptionDecryption(in byte[] srcData, int mode);
+
+    /*
+    * Chinese 获取终端谷歌/百度定位（含地址）
+    * English Get terminal Google/Baidu location including address
+    *
+    * @params json Chinese 可选 provider：google/baidu；空则用商店设置页图商
+    *              English Optional provider google/baidu; empty uses store mapProvider
+    *
+    * @return String Chinese 定位结果 JSON
+    *                English Location result JSON
+    */
+    String getTerminalLocation(String json);
 }
